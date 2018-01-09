@@ -1,3 +1,0 @@
-package redux
-
-class State

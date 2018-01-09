@@ -1,3 +1,3 @@
 package redux
 
-class Action(val type: String)
+class Action<T>(val type: String, val value: T)

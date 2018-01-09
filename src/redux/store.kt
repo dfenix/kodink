@@ -1,6 +1,6 @@
 package redux
 
-class Store(reducer: Reducer, preloadedState: State? = null, enhancer: Any? = null) {
+class Store<T>(reducer: (T, Action<T>) -> T, preloadedState: T? = null, enhancer: Any? = null) {
     var currentReducer = reducer
     var currentState = preloadedState
     var currentListeners: ArrayList<() -> Unit> = arrayListOf()
@@ -46,14 +46,14 @@ class Store(reducer: Reducer, preloadedState: State? = null, enhancer: Any? = nu
         }
     }
 
-    fun dispatch(action: Action): Action {
+    fun dispatch(action: Action<T>): Action<T> {
         if (isDispatching) {
             throw Error("Reducers may not dispatch actions.")
         }
 
         try {
             isDispatching = true
-            currentState = currentReducer.execute(currentState!!, action)
+            currentState = currentReducer(currentState!!, action)
         } finally {
             isDispatching = false
         }
