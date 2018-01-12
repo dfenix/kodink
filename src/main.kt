@@ -1,5 +1,7 @@
 import redux.Action
+import redux.Reducer
 import redux.Store
+import redux.State
 import redux.combineReducers
 
 fun main(args: Array<String>) {
@@ -26,24 +28,36 @@ fun main(args: Array<String>) {
     /* Multiple reducers */
     class User(var name: String = "", var age: Int = 0)
 
-    val userReducer = { state: User, action: Action<User> ->
+    val userReducer = Reducer()
+    userReducer.subscribe{ state: UserState, action: Action<UserState> ->
         when (action.type) {
-            "CHANGE_NAME" -> action.value.name //state = {...state, name: action.payload}
-            "CHANGE_AGE" -> action.value.age
+            "CHANGE_NAME" -> UserState(action.value.name) //state = {...state, name: action.payload}
+            "CHANGE_AGE" -> UserState(age = action.value.age)
             else -> state
         }
     }
 
-    val tweetsReducer = { state: ArrayList<String>, action: Action<ArrayList<String>> ->
-        state
+    val tweetsReducer = Reducer()
+    tweetsReducer.subscribe { state: StringState, action: Action<StringState> ->
+        when (action.type) {
+            "ADD_TEXT" -> action.value
+            else -> state
+        }
     }
 
-    val reducers = combineReducers(userReducer, tweetsReducer)
+    val reducers: List<out Reducer> = listOf(userReducer, tweetsReducer)
+    /*val reducers = combineReducers(userReducer, tweetsReducer)
     val storee = Store(reducers)
     storee.subscribe { println("Store changed: ${store.getState()}") }
 
     storee.dispatch(Action("CHANGE_NAME", User("David")))
     storee.dispatch(Action("CHANGE_AGE", User(age = 25)))
-    storee.dispatch(Action("CHANGE_AGE", User(age = 26)))
+    storee.dispatch(Action("CHANGE_AGE", User(age = 26)))*/
     /* Multiple reducers */
 }
+
+class IntState(var num: Int): State
+class StringState(var txt: String): State
+class UserState(var name: String = "", var age: Int = 0): State
+class TweetsState(var tweets: List<String>): State
+
