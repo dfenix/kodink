@@ -45,14 +45,14 @@ fun main(args: Array<String>) {
         }
     }
 
-    val reducers: List<out Reducer> = listOf(userReducer, tweetsReducer)
-    /*val reducers = combineReducers(userReducer, tweetsReducer)
-    val storee = Store(reducers)
-    storee.subscribe { println("Store changed: ${store.getState()}") }
+//    val reducers: List<out Reducer> = listOf(userReducer, tweetsReducer)
+    val reducers = combineReducers(userReducer, tweetsReducer)
+    /*val store2 = Store(reducers)
+    store2.subscribe { println("Store changed: ${store.getState()}") }
 
-    storee.dispatch(Action("CHANGE_NAME", User("David")))
-    storee.dispatch(Action("CHANGE_AGE", User(age = 25)))
-    storee.dispatch(Action("CHANGE_AGE", User(age = 26)))*/
+    store2.dispatch(Action("CHANGE_NAME", User("David")))
+    store2.dispatch(Action("CHANGE_AGE", User(age = 25)))
+    store2.dispatch(Action("CHANGE_AGE", User(age = 26)))*/
     /* Multiple reducers */
 }
 
