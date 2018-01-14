@@ -1,11 +1,15 @@
 package redux
 
-class Store<T>(reducer: (T, Action<T>) -> T, preloadedState: T? = null, enhancer: Any? = null) {
+class Store<S>(reducer: Reducer<S>, preloadedState: S? = null, enhancer: Any? = null) {
     var currentReducer = reducer
     var currentState = preloadedState
     var currentListeners: ArrayList<() -> Unit> = arrayListOf()
     var nextListeners: ArrayList<() -> Unit> = currentListeners
     var isDispatching: Boolean = false
+
+    init{
+        dispatch(Action(ActionTypes.INIT.name, EmptyState() as S))
+    }
 
     fun getState() = currentState
 
@@ -46,14 +50,14 @@ class Store<T>(reducer: (T, Action<T>) -> T, preloadedState: T? = null, enhancer
         }
     }
 
-    fun dispatch(action: Action<T>): Action<T> {
+    fun dispatch(action: Action<S>): Action<S> {
         if (isDispatching) {
             throw Error("Reducers may not dispatch actions.")
         }
 
         try {
             isDispatching = true
-            currentState = currentReducer(currentState!!, action)
+            currentState = currentReducer.execute(currentState!!, action)
         } finally {
             isDispatching = false
         }
