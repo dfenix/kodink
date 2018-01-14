@@ -2,17 +2,15 @@ import redux.*
 
 fun main(args: Array<String>) {
     /* Simple implementation */
-    val reducer = Reducer({ state: IntState, action: Action<IntState> ->
+    val reducer = Reducer(IntState(0), { state: IntState, action: Action<IntState> ->
         when (action.type) {
             "INC" -> IntState(state.num + action.value.num)
             "DEC" -> IntState(state.num - action.value.num)
             else -> state
         }
     })
-    reducer.execute(IntState(0),Action("INC", IntState(2)))
 
     val store = Store(reducer, IntState(0))
-
     store.subscribe { println("Store changed: ${store.getState()?.num}") }
 
     store.dispatch(Action("INC", IntState(1)))
@@ -23,9 +21,7 @@ fun main(args: Array<String>) {
     /* Simple implementation */
 
     /* Multiple reducers */
-    class User(var name: String = "", var age: Int = 0)
-
-    val userReducer = Reducer({ state: UserState, action: Action<UserState> ->
+    val userReducer = Reducer(UserState(), { state: UserState, action: Action<UserState> ->
         when (action.type) {
             "CHANGE_NAME" -> UserState(action.value.name) //state = {...state, name: action.payload}
             "CHANGE_AGE" -> UserState(age = action.value.age)
@@ -33,7 +29,7 @@ fun main(args: Array<String>) {
         }
     })
 
-    val tweetsReducer = Reducer({ state: StringState, action: Action<StringState> ->
+    val tweetsReducer = Reducer(TweetsState(), { state: TweetsState, action: Action<TweetsState> ->
         when (action.type) {
             "ADD_TEXT" -> action.value
             else -> state
@@ -53,5 +49,5 @@ fun main(args: Array<String>) {
 class IntState(var num: Int): State
 class StringState(var txt: String): State
 class UserState(var name: String = "", var age: Int = 0): State
-class TweetsState(var tweets: List<String>): State
+class TweetsState(var tweets: List<String> = listOf()): State
 

@@ -1,14 +1,14 @@
 package redux
 
-class Store<S>(reducer: Reducer<S>, preloadedState: S? = null, enhancer: Any? = null) {
+class Store<S>(reducer: Reducer<S>, /*preloadedState: S? = null,*/ enhancer: Any? = null) {
     var currentReducer = reducer
-    var currentState = preloadedState
-    var currentListeners: ArrayList<() -> Unit> = arrayListOf()
-    var nextListeners: ArrayList<() -> Unit> = currentListeners
-    var isDispatching: Boolean = false
+    private var currentState = reducer.initialState//preloadedState
+    private var currentListeners: ArrayList<() -> Unit> = arrayListOf()
+    private var nextListeners: ArrayList<() -> Unit> = currentListeners
+    private var isDispatching: Boolean = false
 
     init{
-        dispatch(Action(ActionTypes.INIT.name, EmptyState() as S))
+        dispatch(Action(ActionTypes.INIT.name, currentState))
     }
 
     fun getState() = currentState

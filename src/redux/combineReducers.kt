@@ -1,19 +1,7 @@
 package redux
 
-fun <S>combineReducers(vararg namedReducers: Pair<String,Reducer<S>>): Reducer<S> {
-    try {
-//        assertReducerShape(namedReducers)
-    }catch (e: Exception){
-        println(e)
-    }
+fun <S> combineReducers(vararg namedReducers: Pair<String, Reducer<S>>): Reducer<S> {
     return SuperReducer(namedReducers.toMap())
-}
-
-fun <S> assertReducerShape(reducers: Map<String, Reducer<S>>) {
-    for (reducer in reducers){
-//        val initialState: EmptyState = reducer.value.execute(action = Action(ActionTypes.INIT.name, EmptyState()))
-//        if (initialState.nothing == )
-    }
 }
 
 //fun combineReducers(vararg reducers: Reducer){
