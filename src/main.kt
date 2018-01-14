@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
     })
 
     val store = Store(reducer, IntState(0))
-    store.subscribe { println("Store changed: ${store.getState()?.num}") }
+    store.subscribe { println("Store changed: ${store.getState()}") }
 
     store.dispatch(Action("INC", IntState(1)))
     store.dispatch(Action("INC", IntState(2)))
@@ -36,9 +36,9 @@ fun main(args: Array<String>) {
         }
     })
 
-    val reducers = combineReducers(Pair("user", userReducer), Pair("tweets", tweetsReducer))
+    val reducers = SuperReducer(Pair("user", userReducer), Pair("tweets", tweetsReducer))
     val store2 = Store(reducers)
-    store2.subscribe { println("Store changed: ${store.getState()}") }
+    store2.subscribe { println("Store changed: ${store2.getState()}") }
 
     store2.dispatch(Action("CHANGE_NAME", UserState("David")))
     store2.dispatch(Action("CHANGE_AGE", UserState(age = 25)))
@@ -46,8 +46,8 @@ fun main(args: Array<String>) {
     /* Multiple reducers */
 }
 
-class IntState(var num: Int): State
-class StringState(var txt: String): State
-class UserState(var name: String = "", var age: Int = 0): State
-class TweetsState(var tweets: List<String> = listOf()): State
+data class IntState(var num: Int): State
+data class StringState(var txt: String): State
+data class UserState(var name: String = "", var age: Int = 0): State
+data class TweetsState(var tweets: List<String> = listOf()): State
 

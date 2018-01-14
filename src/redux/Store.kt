@@ -2,16 +2,13 @@ package redux
 
 class Store<S>(reducer: Reducer<S>, /*preloadedState: S? = null,*/ enhancer: Any? = null) {
     var currentReducer = reducer
-    private var currentState = reducer.initialState//preloadedState
+    private var currentState: ArrayList<S> = arrayListOf(reducer.initialState)//preloadedState
     private var currentListeners: ArrayList<() -> Unit> = arrayListOf()
     private var nextListeners: ArrayList<() -> Unit> = currentListeners
     private var isDispatching: Boolean = false
 
-    init{
-        dispatch(Action(ActionTypes.INIT.name, currentState))
-    }
-
-    fun getState() = currentState
+    fun getState() = currentState.last()
+    fun getAllstates() = currentState
 
     fun ensureCanMutateNextListeners() {
         if (nextListeners == currentListeners) {
@@ -57,7 +54,7 @@ class Store<S>(reducer: Reducer<S>, /*preloadedState: S? = null,*/ enhancer: Any
 
         try {
             isDispatching = true
-            currentState = currentReducer.execute(currentState!!, action)
+            currentState.add(currentReducer.execute(currentState.last(), action))
         } finally {
             isDispatching = false
         }
