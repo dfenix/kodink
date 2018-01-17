@@ -1,24 +1,20 @@
-package ui
+package demo.components
 
 import javafx.scene.control.Control
-import com.sun.javafx.scene.control.behavior.BehaviorBase
-import com.sun.javafx.scene.control.inputmap.InputMap
+import javafx.scene.control.Skin
 import javafx.scene.control.SkinBase
+import javafx.scene.layout.*
+import javafx.scene.paint.Color
 
 open class Component : Control(){
-    init{
-        styleClass.add("component")
-    }
-
-    override fun getUserAgentStylesheet(): String {
-        return javaClass.getResource("component.css").toExternalForm()
+    override fun createDefaultSkin(): Skin<*> {
+        return  ComponentSkin(this)
     }
 }
 
-class ComponentBehavior(control: Component) : BehaviorBase<Component>(control) {
-    override fun getInputMap(): InputMap<Component> {
-        TODO("not implemented")
+class ComponentSkin(component: Component): SkinBase<Component>(component){
+    init {
+        component.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
+        component.border = Border(BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths(2.0)))
     }
 }
-
-class ComponentSkin(control: Component) : SkinBase<Component>(control)
