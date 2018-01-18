@@ -1,6 +1,6 @@
 package redux
 
-class Store<S>(reducer: Reducer<S>, /*preloadedState: S? = null,*/ enhancer: Any? = null) {
+class Store<S>(reducer: Reducer<S>, enhancer: Any? = null) {
     var currentReducer = reducer
     private var currentState: ArrayList<S> = arrayListOf(reducer.initialState)//preloadedState
     private var currentListeners: ArrayList<() -> Unit> = arrayListOf()
