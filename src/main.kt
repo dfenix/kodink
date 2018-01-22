@@ -4,8 +4,8 @@ fun main(args: Array<String>) {
     /* Simple implementation */
     val reducer = Reducer(IntState(0), { state: IntState, action: Action<IntState> ->
         when (action.type) {
-            "INC" -> IntState(state.num + action.value.num)
-            "DEC" -> IntState(state.num - action.value.num)
+            "INC" -> IntState(state.num + action.payload.num)
+            "DEC" -> IntState(state.num - action.payload.num)
             else -> state
         }
     })
@@ -23,15 +23,15 @@ fun main(args: Array<String>) {
     /* Multiple reducers */
     val userReducer = Reducer(UserState(), { state: UserState, action: Action<UserState> ->
         when (action.type) {
-            "CHANGE_NAME" -> UserState(action.value.name) //state = {...state, name: action.payload}
-            "CHANGE_AGE" -> UserState(age = action.value.age)
+            "CHANGE_NAME" -> UserState(action.payload.name) //state = {...state, name: action.payload}
+            "CHANGE_AGE" -> UserState(age = action.payload.age)
             else -> state
         }
     })
 
     val tweetsReducer = Reducer(TweetsState(), { state: TweetsState, action: Action<TweetsState> ->
         when (action.type) {
-            "ADD_TEXT" -> action.value
+            "ADD_TEXT" -> action.payload
             else -> state
         }
     })
