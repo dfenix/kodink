@@ -1,4 +1,4 @@
-package demo.components
+package counter.components
 
 import javafx.scene.text.Text
 import ui.*

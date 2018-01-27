@@ -1,4 +1,4 @@
-package demo.reducers
+package counter.reducers
 
 import redux.Action
 import redux.Reducer

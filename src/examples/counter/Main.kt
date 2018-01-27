@@ -1,6 +1,6 @@
-package demo
+package counter
 
-import demo.app.App
+import counter.app.App
 import javafx.application.Application
 
 fun main(args: Array<String>) {

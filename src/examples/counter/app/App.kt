@@ -1,8 +1,8 @@
-package demo.app
+package counter.app
 
-import demo.components.counter
-import demo.reducers.CounterReducer
-import demo.reducers.CounterState
+import counter.components.counter
+import counter.reducers.CounterReducer
+import counter.reducers.CounterState
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.layout.VBox
