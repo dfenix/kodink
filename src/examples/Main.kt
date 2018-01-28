@@ -1,13 +1,15 @@
 package examples
 
-import examples.simple.plainCalls
 import ui.app
+import ui.runApp
 
-fun main(args: Array<String>){
-    plainCalls()
-//    app{
-//        text {
-//            "Hello World!"
-//        }
-//    }
+fun main(args: Array<String>) {
+    //plainCalls()
+    runApp(
+            app {
+                text {
+                    text = "Hello World!"
+                }
+            }
+    )
 }
