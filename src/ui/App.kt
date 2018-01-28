@@ -2,12 +2,13 @@ package ui
 
 import javafx.application.Application
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.Stage
 
 class App: Application(){
-    private val root: VBox = VBox()
+    val root: VBox = VBox()
 
     override fun start(primaryStage: Stage?) {
         primaryStage?.title = "Kodink demo"
@@ -15,11 +16,25 @@ class App: Application(){
         primaryStage?.show()
     }
 
-    fun text(setup: Text.() -> Unit): Text {
-        val text = Text()
+    fun text(setup: ComponentWithText.() -> Unit): ComponentWithText {
+        val text = ComponentWithText()
         text.setup()
         root.children.add(text)
         return text
+    }
+
+    fun container(setup: Container.() -> Unit): Container {
+        val container = Container()
+        container.setup()
+        root.children.add(container)
+        return container
+    }
+
+    fun button(setup: Button.() -> Unit): Button {
+        val button = Button()
+        button.setup()
+        root.children.add(button)
+        return button
     }
 }
 
@@ -30,6 +45,23 @@ class RunApplication: Application() {
 
     override fun start(primaryStage: Stage?) {
         app?.start(primaryStage)
+    }
+}
+
+class ComponentWithText: Text(){
+    operator fun String.unaryPlus() {
+        text = this
+    }
+}
+
+class ComponentWithAction: Button(){
+    var onClick: () -> Unit = {}
+        set(value) = setOnAction { value }
+    var _disabled: Boolean
+        get() = isDisabled
+        set(value) = super.setDisabled(value)
+    operator fun String.unaryPlus() {
+        text = this
     }
 }
 

@@ -1,7 +1,8 @@
 package counter.components
 
 import javafx.scene.text.Text
-import ui.*
+import ui.Component
+import ui.container
 
 fun counter(init: Counter.() -> Unit): Counter {
     val counter = Counter()
