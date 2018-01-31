@@ -1,8 +1,10 @@
 package redux
 
-class Store<S>(reducer: Reducer<S>, enhancer: Any? = null) {
+typealias ReducerType<State> = (State, Action<State>) -> State
+
+class Store2<out State>(reducer: ReducerType<State>, enhancer: Any? = null) {
     var currentReducer = reducer
-    private var currentState: ArrayList<S> = arrayListOf(reducer.initialState)//preloadedState
+    private var currentState: ArrayList<State> = arrayListOf()//preloadedState
     private var currentListeners: ArrayList<() -> Unit> = arrayListOf()
     private var nextListeners: ArrayList<() -> Unit> = currentListeners
     private var isDispatching: Boolean = false

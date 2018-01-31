@@ -1,4 +1,4 @@
-package examples
+package examples.simple
 
 import javafx.scene.Parent
 import ui.RunApplication
@@ -6,7 +6,7 @@ import ui.container
 import ui.runApp
 
 fun main(args: Array<String>) {
-    //plainCalls()
+    basicExample()
     runApp(Launch::class)
 }
 
