@@ -1,22 +1,25 @@
 package redux
 
+import kotlin.jvm.internal.CallableReference
+
 typealias ReducerType<State> = (State, Action<State>) -> State
 typealias ListenerType = () -> Unit
 
-class Store2<State>{
-    lateinit var currentReducer: ReducerType<State>
-    val listReducers = mutableMapOf<String, ReducerType<State>>()
-    private var currentState = mutableListOf<State>()
+class Store{
+    private val listReducers = mutableMapOf<String, ReducerType<State>>()
+    private var currentState = mutableMapOf<String, redux.State>()
     private var listeners = mutableListOf<ListenerType>()
     private var isDispatching: Boolean = false
 
-    fun getState() = currentState.last()
-    fun getAllstates() = currentState
+    fun getState() = currentState
+    fun getStateFor(name: String) = currentState[name]!!
 
-    fun addReducer(newReducer: ReducerType<State>): Boolean{
-        val key = newReducer.javaClass.simpleName
+    fun <S : State>addReducer(newReducer: ReducerType<S>, initialState: State): Boolean{
+        val key = (newReducer as CallableReference).name
         if(!listReducers.containsKey(key)){
-            listReducers[key] = newReducer
+            @Suppress("UNCHECKED_CAST")
+            listReducers[key] = newReducer as ReducerType<State>
+            currentState[key] = initialState
             return true
         }
         return false
@@ -50,16 +53,17 @@ class Store2<State>{
 
         try {
             isDispatching = true
-            //currentState.add(currentReducer(currentState.last(), action))
 
+            var hasChanged = false
+            val nextState = mutableMapOf<String, State>()
             for (reducer in listReducers) {
                 val key = reducer.key
-                val previousStateForKey = states[key]as State
+                val previousStateForKey = currentState[key]!!
                 val nextStateForKey = reducer.value(previousStateForKey, action)
                 nextState[key] = nextStateForKey
                 hasChanged = hasChanged || nextStateForKey !== previousStateForKey
             }
-            return if (hasChanged) MapOfStates(nextState) as State else state
+            if (hasChanged) currentState = nextState
         } finally {
             isDispatching = false
         }
