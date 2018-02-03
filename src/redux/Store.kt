@@ -1,22 +1,31 @@
 package redux
 
-class Store<S>(reducer: Reducer<S>, enhancer: Any? = null) {
-    var currentReducer = reducer
-    private var currentState: ArrayList<S> = arrayListOf(reducer.initialState)//preloadedState
-    private var currentListeners: ArrayList<() -> Unit> = arrayListOf()
-    private var nextListeners: ArrayList<() -> Unit> = currentListeners
+import kotlin.jvm.internal.CallableReference
+
+typealias ReducerType<State> = (State, Action<State>) -> State
+typealias ListenerType = () -> Unit
+
+class Store{
+    private val listReducers = mutableMapOf<String, ReducerType<State>>()
+    private var currentState = mutableMapOf<String, redux.State>()
+    private var listeners = mutableListOf<ListenerType>()
     private var isDispatching: Boolean = false
 
-    fun getState() = currentState.last()
-    fun getAllstates() = currentState
+    fun getState() = currentState
+    fun getStateFor(name: String) = currentState[name]!!
 
-    fun ensureCanMutateNextListeners() {
-        if (nextListeners == currentListeners) {
-            nextListeners = currentListeners
+    fun <S : State>addReducer(newReducer: ReducerType<S>, initialState: State): Boolean{
+        val key = (newReducer as CallableReference).name
+        if(!listReducers.containsKey(key)){
+            @Suppress("UNCHECKED_CAST")
+            listReducers[key] = newReducer as ReducerType<State>
+            currentState[key] = initialState
+            return true
         }
+        return false
     }
 
-    fun subscribe(listener: () -> Unit): () -> Unit {
+    fun subscribe(listener: ListenerType){
         if (isDispatching) {
             throw Error("You may not call store.subscribe() while the reducer is executing. " +
                     "If you would like to be notified after the store has been updated, subscribe from a " +
@@ -24,43 +33,41 @@ class Store<S>(reducer: Reducer<S>, enhancer: Any? = null) {
                     "See http://redux.js.org/docs/api/Store.html#subscribe for more details."
             )
         }
-
-        var isSubscribed: Boolean = true
-        ensureCanMutateNextListeners()
-        nextListeners.add(listener)
-        return fun() {
-            if (!isSubscribed) {
-                return
-            }
-
-            if (isDispatching) {
-                throw Error("You may not unsubscribe from a store listener while the reducer is executing. " +
-                        "See http://redux.js.org/docs/api/Store.html#subscribe for more details."
-                )
-            }
-
-            isSubscribed = false
-
-            ensureCanMutateNextListeners()
-            val index = nextListeners.indexOf(listener)
-            nextListeners.removeAt(index)
-        }
+        listeners.add(listener)
     }
 
-    fun dispatch(action: Action<S>): Action<S> {
+    fun unsubscribe() {
+        if (isDispatching) {
+            throw Error("You may not unsubscribe from a store listener while the reducer is executing. " +
+                    "See http://redux.js.org/docs/api/Store.html#subscribe for more details."
+            )
+        }
+//        val index = nextListeners.indexOf(listener)
+//        nextListeners.removeAt(index)
+    }
+
+    fun dispatch(action: Action<State>): Action<State> {
         if (isDispatching) {
             throw Error("Reducers may not dispatch actions.")
         }
 
         try {
             isDispatching = true
-            currentState.add(currentReducer.execute(currentState.last(), action))
+
+            var hasChanged = false
+            val nextState = mutableMapOf<String, State>()
+            for (reducer in listReducers) {
+                val key = reducer.key
+                val previousStateForKey = currentState[key]!!
+                val nextStateForKey = reducer.value(previousStateForKey, action)
+                nextState[key] = nextStateForKey
+                hasChanged = hasChanged || nextStateForKey !== previousStateForKey
+            }
+            if (hasChanged) currentState = nextState
         } finally {
             isDispatching = false
         }
 
-        currentListeners = nextListeners
-        val listeners = currentListeners
         for (listener in listeners) {
             listener()
         }
