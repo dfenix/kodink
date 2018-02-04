@@ -4,11 +4,11 @@ import javafx.scene.text.Text
 import ui.Component
 import ui.container
 
-fun counter(init: Counter.() -> Unit): Counter {
-    val counter = Counter()
-    counter.init()
-    return counter
-}
+//fun counter(init: Counter.() -> Unit): Counter {
+//    val counter = Counter()
+//    counter.init()
+//    return counter
+//}
 
 class Counter : Component() {
     lateinit var textReference: Text

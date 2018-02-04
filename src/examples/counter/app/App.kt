@@ -1,6 +1,6 @@
 package examples.counter.app
 
-import counter.components.counter
+import counter.components.Counter
 import examples.counter.reducers.CounterState
 import javafx.application.Application
 import javafx.scene.Scene
@@ -10,14 +10,15 @@ import redux.Action
 import redux.Provider
 import redux.Provider.store
 import examples.counter.reducers.counterReducer
+import ui.component
 
 class App : Application() {
     @Throws(Exception::class)
     override fun start(primaryStage: Stage) {
 
         store.addReducer(::counterReducer, CounterState())
-        val counter = counter {
-            value = (Provider.store.getStateFor(::counterReducer.name) as CounterState).counter
+        val counter = component(Counter()) {
+            //value = (Provider.store.getStateFor(::counterReducer.name) as CounterState).counter
             onIncrement = { Provider.store.dispatch(Action("INCREMENT", CounterState())) }
             onDecrement = { Provider.store.dispatch(Action("DECREMENT", CounterState())) }
         }
