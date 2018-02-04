@@ -10,7 +10,20 @@ fun container(setup: Container.() -> Unit): Container {
     return container
 }
 
+fun <T: Component>component(component: T, setup: T.() -> Unit): T{
+    component.setup()
+    component.create()
+    return component
+}
+
 class Container : VBox() {
+
+    fun <T: Component>initComponent(component: T, setup: T.() -> Unit): T{
+        component.setup()
+        children.add(component)
+        return component
+    }
+
     fun text(setup: ComponentWithText.() -> Unit): ComponentWithText {
         val text = ComponentWithText()
         text.setup()
@@ -34,6 +47,13 @@ class Container : VBox() {
         container.setup()
         children.add(container)
         return container
+    }
+
+    fun <T: Component>component(component: T, setup: T.() -> Unit): T{
+        component.setup()
+        component.create()
+        children.add(component)
+        return component
     }
 
 }

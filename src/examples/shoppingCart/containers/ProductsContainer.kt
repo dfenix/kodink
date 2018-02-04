@@ -1,17 +1,19 @@
-//package examples.shoppingCart.containers
-//
-//import examples.shoppingCart.KComp
-//
-//class ProductsContainer: KComp(){
-//    override fun render(){
-//        productsList{
-//            title = "Products"
-//            products.map{
-//                product -> productItem{
-//                key = product.id
-//                product = product
-//                //onAddToCartClicked = { _ -> addToCart(product.id)}
-//            }}
-//        }
-//    }
-//}
+package examples.shoppingCart.containers
+
+import examples.shoppingCart.components.Product
+import examples.shoppingCart.components.ProductItem
+import ui.Component
+import ui.component
+import examples.shoppingCart.components.ProductsList
+
+class ProductsContainer: Component(){
+    var products = mutableListOf<Product>()
+    override fun render() = component(ProductsList()){
+        title = "Products"
+        +products.map{
+            component(ProductItem()){
+                product = it
+            }
+        }
+    }
+}

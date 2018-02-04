@@ -1,13 +1,15 @@
 package examples.shoppingCart.containers
 
+import examples.shoppingCart.components.Product
 import javafx.scene.Parent
 import ui.RunApplication
+import ui.component
 import ui.container
 
 class App : RunApplication() {
     override fun render(): Parent{
         //remove this block
-        class Product(val title: String, val price: Int, val inventory: Int)
+//        class Product(val title: String, val price: Int, val inventory: Int)
 
         val products = listOf(
                 Product("jugo naranja", 100, 5),
@@ -15,12 +17,15 @@ class App : RunApplication() {
                 Product("chile", 3, 14)
         )
 
-        val onAddToCartClicked = { println("click!")}
+//        val onAddToCartClicked = { println("click!")}
         //remove this block
 
         return container {
             text { +"Shopping Cart Example" }
-            container {
+            component(ProductsContainer()){
+                this.products = products.toMutableList()
+            }
+            /*container {
                 text { +"Products" }
                 container {
                     for (product in products) {
@@ -37,7 +42,7 @@ class App : RunApplication() {
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 }
