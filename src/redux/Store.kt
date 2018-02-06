@@ -4,12 +4,14 @@ import kotlin.jvm.internal.CallableReference
 
 typealias ReducerType<State> = (State, Action<State>) -> State
 typealias ListenerType = () -> Unit
+typealias Middleware = () -> Any
 
 class Store{
     private val listReducers = mutableMapOf<String, ReducerType<State>>()
-    private var currentState = mutableMapOf<String, redux.State>()
+    private var currentState = mutableMapOf<String, State>()
     private var listeners = mutableListOf<ListenerType>()
     private var isDispatching: Boolean = false
+    private var middlewares = mutableListOf<Middleware>()
 
     fun getState() = currentState
     fun getStateFor(name: String) = currentState[name]!!
@@ -73,5 +75,9 @@ class Store{
         }
 
         return action
+    }
+
+    fun applyMiddleware(middleware: Middleware) {
+        middlewares.add(middleware)
     }
 }

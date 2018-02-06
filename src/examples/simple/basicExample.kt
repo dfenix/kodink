@@ -15,6 +15,7 @@ fun basicExample() {
     }
 
     store.addReducer(::reducer, IntState())
+//    store.applyMiddleware(::logger)
     store.subscribe { println("Store changed: ${store.getState()}") }
 
     store.dispatch(Action("INC", IntState(1)))

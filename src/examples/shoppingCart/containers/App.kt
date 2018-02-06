@@ -25,6 +25,9 @@ class App : RunApplication() {
             component(ProductsContainer()){
                 this.products = products.toMutableList()
             }
+            component(CartContainer()){
+                this.products = products.toMutableList()
+            }
             /*container {
                 text { +"Products" }
                 container {
