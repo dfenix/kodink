@@ -1,5 +1,6 @@
 package examples.simple
 
+import logger
 import redux.Action
 import redux.Provider.store
 import redux.State
@@ -15,8 +16,7 @@ fun basicExample() {
     }
 
     store.addReducer(::reducer, IntState())
-//    store.applyMiddleware(::logger)
-    store.subscribe { println("Store changed: ${store.getState()}") }
+    store.applyMiddleware(::logger)
 
     store.dispatch(Action("INC", IntState(1)))
     store.dispatch(Action("INC", IntState(2)))
@@ -44,8 +44,6 @@ fun basicExample() {
     }
 
     store.addReducer(::tweetsReducer, TweetsState())
-
-    store.subscribe { println("Store changed: ${store.getState()}") }
 
     store.dispatch(Action("CHANGE_NAME", UserState("David")))
     store.dispatch(Action("CHANGE_AGE", UserState(age = 25)))
