@@ -1,5 +1,7 @@
 # kodink
 
+code a style guide!.
+Atomic design by Brad Frost.
 One Paragraph of project description goes here
 
 ## Getting Started
