@@ -4,7 +4,7 @@ import kotlin.jvm.internal.CallableReference
 
 typealias ReducerType<State> = (State, Action<State>) -> State
 typealias ListenerType = () -> Unit
-typealias Middleware = ((Action<State>) -> Action<State>, Action<State>) -> Unit
+typealias Middleware = (Action<State>) -> Action<State>
 
 class Store{
     private val listReducers = mutableMapOf<String, ReducerType<State>>()
@@ -49,10 +49,12 @@ class Store{
     }
 
     fun dispatch(action: Action<State>){
+        var newAction = action
         if(middlewares.size == 0){
             _dispatch(action)
         }else{
-            middlewares.map { it(::_dispatch, action) }
+            middlewares.map { newAction = it(newAction) }
+            _dispatch(newAction)
         }
     }
     private fun _dispatch(action: Action<State>): Action<State> {
@@ -84,7 +86,7 @@ class Store{
         return action
     }
 
-    fun applyMiddleware(middleware: Middleware) {
-        middlewares.add(middleware)
+    fun applyMiddleware(vararg middleware: Middleware) {
+        middlewares.addAll(middleware)
     }
 }

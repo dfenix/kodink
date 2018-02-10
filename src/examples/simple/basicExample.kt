@@ -17,8 +17,7 @@ fun basicExample() {
     }
 
     store.addReducer(::reducer, IntState())
-    store.applyMiddleware(::timer)
-    store.applyMiddleware(::logger)
+    store.applyMiddleware(::timer, ::logger)
 
     store.dispatch(Action("INC", IntState(1)))
     store.dispatch(Action("INC", IntState(2)))
