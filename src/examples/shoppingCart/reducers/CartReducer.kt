@@ -6,18 +6,18 @@ import redux.State
 
 data class InitialState(
         val addedIds: List<String> = listOf(),
-        val quatityById: Map<String, Int> = mapOf(),
-        val productId: String = "",
-        val cart: String = ""
+        val quatityById: Map<String, Int> = mapOf()
 ) : State
 
-fun addedIdsReducer(state: InitialState, action: Action<InitialState>): InitialState {
+data class ProductIDAction(override val type: String, val productId: String) : Action
+
+fun addedIdsReducer(state: InitialState, action: ProductIDAction): InitialState {
     return when (action.type) {
         ActionTypes.ADD_TO_CART -> {
-            if (state.addedIds.contains(action.payload.productId)) {
+            if (state.addedIds.contains(action.productId)) {
                 state
             } else {
-                state.copy(addedIds = state.addedIds.toList() + action.payload.productId)
+                state.copy(addedIds = state.addedIds.toList() + action.productId)
             }
 
         }
@@ -25,24 +25,26 @@ fun addedIdsReducer(state: InitialState, action: Action<InitialState>): InitialS
     }
 }
 
-fun quantityByIdReducer(state: InitialState, action: Action<InitialState>): InitialState {
+fun quantityByIdReducer(state: InitialState, action: ProductIDAction): InitialState {
     return when (action.type) {
         ActionTypes.ADD_TO_CART -> {
-            val value = state.quatityById[action.payload.productId]?.plus(1) ?: 0
-            state.copy(quatityById = state.quatityById.toMap() + Pair(action.payload.productId, value))
+            val value = state.quatityById[action.productId]?.plus(1) ?: 0
+            state.copy(quatityById = state.quatityById.toMap() + Pair(action.productId, value))
         }
         else -> state
     }
 }
 
-fun cartReducer(state: InitialState, action: Action<InitialState>): InitialState {
+data class CartAction(override val type: String, val cart: InitialState) : Action
+
+fun cartReducer(state: InitialState, action: CartAction): InitialState {
     return when (action.type) {
         ActionTypes.CHECKOUT_REQUEST -> InitialState()
-        ActionTypes.CHECKOUT_FAILURE -> InitialState(cart = action.payload.cart)
+        ActionTypes.CHECKOUT_FAILURE -> action.cart
         else -> {
             InitialState(
-                    addedIds = addedIdsReducer(state, action).addedIds,
-                    quatityById = quantityByIdReducer(state, action).quatityById
+                    /*addedIds = addedIdsReducer(state, action).addedIds,
+                    quatityById = quantityByIdReducer(state, action).quatityById*/
             )
         }
     }

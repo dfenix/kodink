@@ -8,7 +8,9 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Color
 
 abstract class Component : Control() {
-    var subComponents = mutableListOf<Control>()
+    private var subComponents = mutableListOf<Control>()
+    private val innerFunctions = mutableMapOf<String, () -> Unit>()
+
     override fun createDefaultSkin(): Skin<*> {
         return ComponentSkin(this)
     }
@@ -19,19 +21,27 @@ abstract class Component : Control() {
         children.add(render())
     }*/
 
-    fun create(){
+    fun create() {
         children.add(render())
-        if(children.size == 1){
+        if (children.size == 1) {
             val container = children[0]
-            if(container is Container){
+            if (container is Container) {
                 container.children.addAll(subComponents)
-                container.children.filter { it is Component}.forEach { (it as Component).create() }
+                container.children.filter { it is Component }.forEach { (it as Component).create() }
             }
         }
     }
 
-    operator fun List<Control>.unaryPlus(){
+    operator fun List<Control>.unaryPlus() {
         subComponents = this.toMutableList()
+    }
+
+    fun subscribe(name: String, function: () -> Unit) {
+        innerFunctions[name] = function
+    }
+
+    fun function(name: String): () -> Unit {
+        return innerFunctions[name]!!
     }
 }
 

@@ -3,7 +3,7 @@ package examples.shoppingCart.components
 import ui.Component
 import ui.container
 
-class ProductsList: Component(){
+class ProductsList : Component() {
 
     var title: String = ""
 

@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     runApp(Launch::class)
 }
 
-class Launch: RunApplication(){
+class Launch : RunApplication() {
     override fun render(): Parent {
         return container {
             text {

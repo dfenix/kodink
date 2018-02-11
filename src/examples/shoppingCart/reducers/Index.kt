@@ -2,8 +2,7 @@ package examples.shoppingCart.reducers
 
 import redux.Provider.store
 
-fun combineReducers(){
+fun combineReducers() {
     store.addReducer(::cartReducer, InitialState())
-    store.addReducer(::productsReducer, InitialState())
-
+    store.addReducer(::productsReducer, ProductsState())
 }

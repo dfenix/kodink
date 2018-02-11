@@ -1,5 +1,5 @@
 package redux
 
-object Provider{
+object Provider {
     val store = Store()
 }

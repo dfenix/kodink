@@ -6,7 +6,7 @@ import javafx.scene.Scene
 import javafx.stage.Stage
 import kotlin.reflect.KClass
 
-abstract class RunApplication: Application(){
+abstract class RunApplication : Application() {
     override fun start(primaryStage: Stage?) {
         val root = render()
         primaryStage?.title = "Kodink demo"

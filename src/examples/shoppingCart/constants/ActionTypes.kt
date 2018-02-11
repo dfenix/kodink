@@ -1,6 +1,6 @@
 package constants
 
-object ActionTypes{
+object ActionTypes {
     val ADD_TO_CART = "ADD_TO_CART"
     val CHECKOUT_REQUEST = "CHECKOUT_REQUEST"
     val CHECKOUT_SUCCESS = "CHECKOUT_SUCCESS"

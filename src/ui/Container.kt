@@ -10,7 +10,7 @@ fun container(setup: Container.() -> Unit): Container {
     return container
 }
 
-fun <T: Component>component(component: T, setup: T.() -> Unit): T{
+fun <T : Component> component(component: T, setup: T.() -> Unit): T {
     component.setup()
     component.create()
     return component
@@ -18,7 +18,7 @@ fun <T: Component>component(component: T, setup: T.() -> Unit): T{
 
 class Container : VBox() {
 
-    fun <T: Component>initComponent(component: T, setup: T.() -> Unit): T{
+    fun <T : Component> initComponent(component: T, setup: T.() -> Unit): T {
         component.setup()
         children.add(component)
         return component
@@ -49,7 +49,7 @@ class Container : VBox() {
         return container
     }
 
-    fun <T: Component>component(component: T, setup: T.() -> Unit): T{
+    fun <T : Component> component(component: T, setup: T.() -> Unit): T {
         component.setup()
         component.create()
         children.add(component)
@@ -58,18 +58,19 @@ class Container : VBox() {
 
 }
 
-class ComponentWithAction: Button(){
+class ComponentWithAction : Button() {
     var onClick: () -> Unit = {}
         set(value) = setOnAction { value }
     var _disabled: Boolean
         get() = isDisabled
         set(value) = super.setDisabled(value)
+
     operator fun String.unaryPlus() {
         text = this
     }
 }
 
-class ComponentWithText: Text(){
+class ComponentWithText : Text() {
     operator fun String.unaryPlus() {
         text = this
     }

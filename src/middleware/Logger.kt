@@ -1,7 +1,6 @@
 import redux.Action
-import redux.State
 
-fun logger(action: Action<State>): Action<State>{
+fun logger(action: Action): Action {
     println("Middleware triggered: $action")
     return action
 }

@@ -2,12 +2,12 @@ package redux
 
 import kotlin.jvm.internal.CallableReference
 
-typealias ReducerType<State> = (State, Action<State>) -> State
+typealias ReducerType<State, Action> = (State, Action) -> State
 typealias ListenerType = () -> Unit
-typealias Middleware = (Action<State>) -> Action<State>
+typealias Middleware = (Action) -> Action
 
-class Store{
-    private val listReducers = mutableMapOf<String, ReducerType<State>>()
+class Store {
+    private val listReducers = mutableMapOf<String, ReducerType<State, Action>>()
     private var currentState = mutableMapOf<String, State>()
     private var listeners = mutableListOf<ListenerType>()
     private var isDispatching: Boolean = false
@@ -16,18 +16,18 @@ class Store{
     fun getState() = currentState
     fun getStateFor(name: String) = currentState[name]!!
 
-    fun <S : State>addReducer(newReducer: ReducerType<S>, initialState: State): Boolean{
+    fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, initialState: S): Boolean {
         val key = (newReducer as CallableReference).name
-        if(!listReducers.containsKey(key)){
+        if (!listReducers.containsKey(key)) {
             @Suppress("UNCHECKED_CAST")
-            listReducers[key] = newReducer as ReducerType<State>
+            listReducers[key] = newReducer as ReducerType<State, Action>
             currentState[key] = initialState
             return true
         }
         return false
     }
 
-    fun subscribe(listener: ListenerType){
+    fun subscribe(listener: ListenerType) {
         if (isDispatching) {
             throw Error("You may not call store.subscribe() while the reducer is executing. " +
                     "If you would like to be notified after the store has been updated, subscribe from a " +
@@ -48,16 +48,17 @@ class Store{
 //        nextListeners.removeAt(index)
     }
 
-    fun dispatch(action: Action<State>){
+    fun dispatch(action: Action) {
         var newAction = action
-        if(middlewares.size == 0){
+        if (middlewares.size == 0) {
             _dispatch(action)
-        }else{
+        } else {
             middlewares.map { newAction = it(newAction) }
             _dispatch(newAction)
         }
     }
-    private fun _dispatch(action: Action<State>): Action<State> {
+
+    private fun _dispatch(action: Action): Action {
         if (isDispatching) {
             throw Error("Reducers may not dispatch actions.")
         }
@@ -70,9 +71,13 @@ class Store{
             for (reducer in listReducers) {
                 val key = reducer.key
                 val previousStateForKey = currentState[key]!!
-                val nextStateForKey = reducer.value(previousStateForKey, action)
-                nextState[key] = nextStateForKey
-                hasChanged = hasChanged || nextStateForKey !== previousStateForKey
+                try {
+                    val nextStateForKey = reducer.value(previousStateForKey, action)
+                    nextState[key] = nextStateForKey
+                    hasChanged = hasChanged || nextStateForKey !== previousStateForKey
+                } catch (e: Exception) {
+                    nextState[key] = previousStateForKey
+                }
             }
             if (hasChanged) currentState = nextState
         } finally {

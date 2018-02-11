@@ -3,11 +3,10 @@ package examples.shoppingCart.containers
 import examples.shoppingCart.components.Product
 import javafx.scene.Parent
 import ui.RunApplication
-import ui.component
 import ui.container
 
 class App : RunApplication() {
-    override fun render(): Parent{
+    override fun render(): Parent {
         //remove this block
 //        class Product(val title: String, val price: Int, val inventory: Int)
 
@@ -22,10 +21,10 @@ class App : RunApplication() {
 
         return container {
             text { +"Shopping Cart Example" }
-            component(ProductsContainer()){
+            component(ProductsContainer()) {
                 this.products = products.toMutableList()
             }
-            component(CartContainer()){
+            component(CartContainer()) {
                 this.products = products.toMutableList()
             }
             /*container {
