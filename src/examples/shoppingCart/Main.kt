@@ -1,14 +1,10 @@
+import examples.shoppingCart.actions.getAllproducts
 import examples.shoppingCart.containers.App
+import examples.shoppingCart.reducers.combineReducers
 import ui.runApp
 
 fun main(args: Array<String>) {
-
-    //val middleware = arrayListOf(createThunkMiddleware())
-//    middleware.add(::logger)
-
-//    Provider.createStore(reducer, applyMiddleware(middleware))
-
-    //    Provider.store.dispatch(getAllProducts())
-
+    combineReducers()
+    getAllproducts()
     runApp(App::class)
 }
