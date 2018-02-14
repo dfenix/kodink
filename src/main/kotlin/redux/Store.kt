@@ -1,7 +1,5 @@
 package redux
 
-import kotlin.jvm.internal.CallableReference
-
 typealias ReducerType<State, Action> = (State, Action) -> State
 typealias ListenerType = () -> Unit
 typealias Middleware = (Action) -> Action
@@ -17,7 +15,7 @@ class Store {
     fun getStateFor(name: String) = currentState[name]!!
 
     fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, initialState: S): Boolean {
-        val key = (newReducer as CallableReference).name
+        val key = "stored_fun_${listReducers.size}"
         if (!listReducers.containsKey(key)) {
             @Suppress("UNCHECKED_CAST")
             listReducers[key] = newReducer as ReducerType<State, Action>

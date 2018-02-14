@@ -22,7 +22,7 @@ class App : Application() {
             onIncrement = { Provider.store.dispatch(CounterAction("INCREMENT")) }
             onDecrement = { Provider.store.dispatch(CounterAction("DECREMENT")) }
         }
-        Provider.store.subscribe { counter.value = (Provider.store.getStateFor(::counterReducer.name) as CounterState).counter }
+        Provider.store.subscribe { counter.value = (Provider.store.getStateFor("stored_fun_0") as CounterState).counter }
 
         val root = VBox()
         root.children.add(counter)

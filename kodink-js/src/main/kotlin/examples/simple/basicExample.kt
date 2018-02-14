@@ -1,7 +1,6 @@
 package examples.simple
 
 import logger
-import middleware.timer
 import redux.Action
 import redux.Provider.store
 import redux.State
@@ -17,7 +16,7 @@ fun basicExample() {
     }
 
     store.addReducer(::reducer, IntState())
-    store.applyMiddleware(::timer, ::logger)
+    store.applyMiddleware(::logger)
 
     store.dispatch(IntAction("INC", 1))
     store.dispatch(IntAction("INC", 2))
