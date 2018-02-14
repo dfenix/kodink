@@ -1,0 +1,3 @@
+rootProject.name = 'kodink'
+
+include 'kodink-jvm', 'kodink-js'
