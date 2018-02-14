@@ -1,4 +1,4 @@
-package kodink.src.main.redux
+package redux
 
 typealias ReducerType<State, Action> = (State, Action) -> State
 typealias ListenerType = () -> Unit

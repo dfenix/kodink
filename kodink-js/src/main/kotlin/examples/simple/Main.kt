@@ -1,4 +1,4 @@
-package main.examples.simple
+package examples.simple
 
 fun main(args: Array<String>) {
     basicExample()
