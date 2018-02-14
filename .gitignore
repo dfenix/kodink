@@ -2,3 +2,4 @@ build
 .gradle
 .idea
 /kodink-js/js
+*.iml
