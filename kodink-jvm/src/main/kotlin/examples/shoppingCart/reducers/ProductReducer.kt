@@ -11,6 +11,7 @@ class EmptyAction(override val type: String) : Action
 
 fun productsReducer() {
     store.addReducer(::byId, ByIdState())
+    store.addReducer(::visibleIds, ListState())
 }
 
 fun products(state: ProductsState, action: EmptyAction): ProductsState {
@@ -25,6 +26,15 @@ data class ByIdState(val id: String = "") : State
 fun byId(state: ByIdState, action: ActionWithProducts): ByIdState {
     return when (action.type) {
         ActionTypes.RECEIVE_PRODUCTS -> state //action.products
+        else -> state
+    }
+}
+
+data class ListState<out T>(val list: List<T> = listOf()) : State
+
+fun visibleIds(state: ListState<Int>, action: ActionWithProducts): ListState<Int> {
+    return when (action.type) {
+        ActionTypes.RECEIVE_PRODUCTS -> ListState(action.products.map { it.id })
         else -> state
     }
 }
