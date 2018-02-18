@@ -1,5 +1,6 @@
 package examples.shoppingCart.containers
 
+import examples.shoppingCart.actions.checkout
 import examples.shoppingCart.components.Cart
 import examples.shoppingCart.reducers.getCartProducts
 import examples.shoppingCart.reducers.getTotal
@@ -20,6 +21,7 @@ class CartContainer : Component() {
     override fun render() = component(Cart()) {
         products = this@CartContainer.products
         total = this@CartContainer.total
+        onCheckoutClicked = { checkout(this@CartContainer.products) }
     }
 
     fun mapStateToProps() {

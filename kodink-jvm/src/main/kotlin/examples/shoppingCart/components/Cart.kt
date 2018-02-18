@@ -18,5 +18,11 @@ class Cart : Component() {
                     text { +"Please add some products to cart." }
                 }
                 text { +"Total: $total" }
+                button {
+                    setOnAction { onCheckoutClicked() }
+                    +"Checkout"
+                }
             }
+
+    lateinit var onCheckoutClicked: () -> Unit
 }

@@ -15,7 +15,7 @@ class ProductItem : Component() {
         }
         button {
             setOnAction { function("onAddToCartClicked")() }
-            +"Add to Cart"
+            if (product.inventory > 0) +"Add to Cart" else +"Sold Out"
         }
     }
 }
