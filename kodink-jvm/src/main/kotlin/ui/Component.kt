@@ -49,6 +49,6 @@ abstract class Component : Control() {
 class ComponentSkin(component: Component) : SkinBase<Component>(component) {
     init {
         component.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE)
-        component.border = Border(BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths(2.0)))
+//        component.border = Border(BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths(2.0)))
     }
 }

@@ -50,7 +50,7 @@ data class ListState(val list: List<Int> = listOf()) : State
 
 fun visibleIds(state: ListState, action: ActionWithProducts): ListState {
     return when (action.type) {
-        ActionTypes.RECEIVE_PRODUCTS -> state//ListState(action.products.map { it.id })
+        ActionTypes.RECEIVE_PRODUCTS -> ListState(action.products.map { it.id })
         else -> state
     }
 }

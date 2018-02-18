@@ -13,7 +13,7 @@ class ActionWithProducts(override val type: String, val products: List<Product>)
 fun receiveProducts(products: List<Product>) = ActionWithProducts(ActionTypes.RECEIVE_PRODUCTS, products)
 
 fun getAllproducts() {
-    Timer("receive products").schedule(100){
+    Timer("receive products").schedule(1000){
         store.dispatch(receiveProducts(products()))
     }
 }
