@@ -16,7 +16,7 @@ fun productsReducer() {
     store.addReducer(::combineProductsReducer, "products", ProductsState())
 }
 
-fun combineProductsReducer(state: ProductsState, action: Action): ProductsState{
+fun combineProductsReducer(state: ProductsState, action: Action): ProductsState {
     if (action is ActionWithProducts) {
         val idState = byId(ByIdState(), action)
         val visibleState = visibleIds(ListState(state.visibleIds), action)
@@ -55,7 +55,8 @@ fun visibleIds(state: ListState, action: ActionWithProducts): ListState {
     }
 }
 
-data class ProductsState(val byId: Map<Int, Product> = mapOf(), val visibleIds: List<Int> = listOf()): State
+data class ProductsState(val byId: Map<Int, Product> = mapOf(), val visibleIds: List<Int> = listOf()) : State
+
 fun getProduct(state: ProductsState, id: Int) = state.byId[id]!!
 
 fun getVisibleProducts(state: ProductsState) = state.visibleIds.map {

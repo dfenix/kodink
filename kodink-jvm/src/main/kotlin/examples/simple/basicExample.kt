@@ -34,7 +34,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::userReducer,"user", UserState())
+    store.addReducer(::userReducer, "user", UserState())
 
     fun tweetsReducer(state: TweetsState, action: Action): TweetsState {
         return when (action.type) {
@@ -43,7 +43,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::tweetsReducer,"tweets", TweetsState())
+    store.addReducer(::tweetsReducer, "tweets", TweetsState())
 
     store.dispatch(UserAction("CHANGE_NAME", UserState("David")))
     store.dispatch(UserAction("CHANGE_AGE", UserState(age = 25)))

@@ -1,9 +1,9 @@
 package examples.shoppingCart.containers
 
-import examples.shoppingCart.api.Product
 import examples.shoppingCart.components.Cart
 import examples.shoppingCart.reducers.getCartProducts
 import examples.shoppingCart.reducers.getTotal
+import javafx.application.Platform
 import redux.Provider.store
 import ui.Component
 import ui.component
@@ -14,16 +14,25 @@ class CartContainer : Component() {
             mapStateToProps()
         }
     }
+
     var products = listOf<CartProduct>()
     var total: Double = 0.0
     override fun render() = component(Cart()) {
-        this.products = products
-        this.total = total
+        products = this@CartContainer.products
+        total = this@CartContainer.total
     }
 
-    fun mapStateToProps(){
+    fun mapStateToProps() {
         products = getCartProducts(store.getState())
         total = getTotal(store.getState())
+        update()
+    }
+
+    fun update() {
+        Platform.runLater({
+            children.clear()
+            create()
+        })
     }
 }
 

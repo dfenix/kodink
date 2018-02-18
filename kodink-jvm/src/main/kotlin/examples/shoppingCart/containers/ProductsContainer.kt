@@ -26,7 +26,7 @@ class ProductsContainer : Component() {
         +products.map {
             component(ProductItem()) {
                 product = it
-                subscribe("onAddToCartClicked", { addToCart(it.title) })
+                subscribe("onAddToCartClicked", { addToCart(it.id) })
             }
         }
     }

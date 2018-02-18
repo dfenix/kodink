@@ -4,9 +4,6 @@ import javafx.scene.Node
 import javafx.scene.control.Control
 import javafx.scene.control.Skin
 import javafx.scene.control.SkinBase
-import javafx.scene.layout.*
-import javafx.scene.paint.Color
-import redux.State
 
 abstract class Component : Control() {
     private var subComponents = mutableListOf<Control>()
