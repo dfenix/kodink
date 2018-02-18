@@ -6,37 +6,37 @@ import redux.Provider.store
 import redux.State
 
 fun cartReducer(){
-    store.addReducer(::cart, "cart", InitialState())
+    store.addReducer(::cart, "cart", CartState())
 }
 
-data class InitialState(
-        val addedIds: List<String> = listOf(),
-        val quatityById: Map<String, Int> = mapOf()
+data class CartState(
+        val addedIds: List<Int> = listOf(),
+        val quatityById: Map<Int, Int> = mapOf()
 ) : State
 
-fun cart(state: InitialState, action: CartAction): InitialState {
+fun cart(state: CartState, action: CartAction): CartState {
     return when (action.type) {
-        ActionTypes.CHECKOUT_REQUEST -> InitialState()
+        ActionTypes.CHECKOUT_REQUEST -> CartState()
         ActionTypes.CHECKOUT_FAILURE -> action.cart//TODO check this
         else -> {
-            val action2 = ProductIDAction("", "")
-            InitialState(
-                    addedIds = addedIds(InitialState(state.addedIds), action2/*action*/).addedIds,
-                    quatityById = quantityById(InitialState(quatityById = state.quatityById), action2 /*action*/).quatityById
+            val action2 = ProductIDAction("", 0)
+            CartState(
+                    addedIds = addedIds(CartState(state.addedIds), action2/*action*/).addedIds,
+                    quatityById = quantityById(CartState(quatityById = state.quatityById), action2 /*action*/).quatityById
             )
         }
     }
 }
 
-data class ProductIDAction(override val type: String, val productId: String) : Action
+data class ProductIDAction(override val type: String, val productId: Int) : Action
 
-fun addedIds(state: InitialState, action: ProductIDAction): InitialState {
+fun addedIds(state: CartState, action: ProductIDAction): CartState {
     return when (action.type) {
         ActionTypes.ADD_TO_CART -> {
             if (state.addedIds.contains(action.productId)) {
                 state
             } else {
-                InitialState(addedIds = state.addedIds.toList() + action.productId)
+                CartState(addedIds = state.addedIds.toList() + action.productId)
             }
 
         }
@@ -44,7 +44,7 @@ fun addedIds(state: InitialState, action: ProductIDAction): InitialState {
     }
 }
 
-fun quantityById(state: InitialState, action: ProductIDAction): InitialState {
+fun quantityById(state: CartState, action: ProductIDAction): CartState {
     return when (action.type) {
         ActionTypes.ADD_TO_CART -> {
             val value = state.quatityById[action.productId]?.plus(1) ?: 0
@@ -54,5 +54,7 @@ fun quantityById(state: InitialState, action: ProductIDAction): InitialState {
     }
 }
 
-data class CartAction(override val type: String, val cart: InitialState) : Action
+data class CartAction(override val type: String, val cart: CartState) : Action
+
+fun getQuantity(state: CartState, productId: Int) = state.quatityById[productId] ?: 0
 
