@@ -1,7 +1,7 @@
 package examples.shoppingCart.containers
 
+import examples.shoppingCart.api.Product
 import examples.shoppingCart.components.Cart
-import examples.shoppingCart.components.Product
 import ui.Component
 import ui.component
 

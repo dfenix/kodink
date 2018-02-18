@@ -1,5 +1,6 @@
 package examples.shoppingCart.components
 
+import examples.shoppingCart.api.Product
 import ui.Component
 import ui.container
 
@@ -11,7 +12,7 @@ class Cart : Component() {
             container {
                 text { +"Your Cart" }
                 if (hasProducts) {
-                    container { +products }
+                    container { +products.map { ProductComp(it.title, it.price, it.inventory) } }
                 } else {
                     text { +"Please add some products to cart." }
                 }

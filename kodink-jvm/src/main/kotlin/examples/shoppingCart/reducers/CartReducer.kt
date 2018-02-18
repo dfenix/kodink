@@ -6,7 +6,7 @@ import redux.Provider.store
 import redux.State
 
 fun cartReducer(){
-    store.addReducer(::cart, InitialState())
+    store.addReducer(::cart, "cart", InitialState())
 }
 
 data class InitialState(

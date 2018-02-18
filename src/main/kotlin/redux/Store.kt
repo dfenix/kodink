@@ -14,8 +14,8 @@ class Store {
     fun getState() = currentState
     fun getStateFor(name: String) = currentState[name]!!
 
-    fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, initialState: S): Boolean {
-        val key = "stored_fun_${listReducers.size}"
+    fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, name: String, initialState: S): Boolean {
+        val key = if (name.isEmpty()) "stored_fun_${listReducers.size}" else name
         if (!listReducers.containsKey(key)) {
             @Suppress("UNCHECKED_CAST")
             listReducers[key] = newReducer as ReducerType<State, Action>
