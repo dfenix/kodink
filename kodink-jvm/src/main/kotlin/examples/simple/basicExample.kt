@@ -15,7 +15,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::reducer, IntState())
+    store.addReducer(::reducer, "reducer", IntState())
     store.applyMiddleware(::logger)
 
     store.dispatch(IntAction("INC", 1))
@@ -34,7 +34,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::userReducer, UserState())
+    store.addReducer(::userReducer, "user", UserState())
 
     fun tweetsReducer(state: TweetsState, action: Action): TweetsState {
         return when (action.type) {
@@ -43,7 +43,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::tweetsReducer, TweetsState())
+    store.addReducer(::tweetsReducer, "tweets", TweetsState())
 
     store.dispatch(UserAction("CHANGE_NAME", UserState("David")))
     store.dispatch(UserAction("CHANGE_AGE", UserState(age = 25)))

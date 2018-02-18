@@ -16,13 +16,13 @@ class App : Application() {
     @Throws(Exception::class)
     override fun start(primaryStage: Stage) {
 
-        store.addReducer(::counterReducer, CounterState())
+        store.addReducer(::counterReducer, "counter", CounterState())
         val counter = component(Counter()) {
             //value = (Provider.store.getStateFor(::counterReducer.name) as CounterState).counter
             onIncrement = { Provider.store.dispatch(CounterAction("INCREMENT")) }
             onDecrement = { Provider.store.dispatch(CounterAction("DECREMENT")) }
         }
-        Provider.store.subscribe { counter.value = (Provider.store.getStateFor("stored_fun_0") as CounterState).counter }
+        Provider.store.subscribe { counter.value = (Provider.store.getStateFor("counter") as CounterState).counter }
 
         val root = VBox()
         root.children.add(counter)

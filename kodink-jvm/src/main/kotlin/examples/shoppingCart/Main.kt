@@ -6,5 +6,6 @@ import ui.runApp
 fun main(args: Array<String>) {
     combineReducers()
     getAllproducts()
+    getAllproducts()
     runApp(App::class)
 }

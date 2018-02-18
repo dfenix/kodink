@@ -3,20 +3,10 @@ package examples.shoppingCart.components
 import ui.Component
 import ui.container
 
-class Product() : Component() {
-    var title: String = ""
-    var price: Int = 0
-    var quantity: Int = 0
-
-    constructor(title: String, price: Int, quantity: Int) : this() {
-        this.title = title
-        this.price = price
-        this.quantity = quantity
-    }
-
+class ProductComp(var title: String = "", var price: Double = 0.0, var quantity: Int = 0) : Component() {
     override fun render() = container {
         text {
-            +"$title - $price x $quantity"
+            +"$title - $$price x $quantity"
         }
     }
 }
