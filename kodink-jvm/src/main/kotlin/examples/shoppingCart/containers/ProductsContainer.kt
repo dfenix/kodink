@@ -1,6 +1,6 @@
 package examples.shoppingCart.containers
 
-import examples.shoppingCart.actions.ProductsState
+import examples.shoppingCart.constants.ProductsState
 import examples.shoppingCart.actions.addToCart
 import examples.shoppingCart.api.Product
 import examples.shoppingCart.components.ProductItem

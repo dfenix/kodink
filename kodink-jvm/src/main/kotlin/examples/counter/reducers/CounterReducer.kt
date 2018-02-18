@@ -4,12 +4,13 @@ import redux.Action
 import redux.State
 
 data class CounterState(val counter: Int = 0) : State
-data class CounterAction(override val type: String) : Action
+class Increment : Action
+class Decrement : Action
 
 fun counterReducer(state: CounterState, action: Action): CounterState {
-    return when (action.type) {
-        "INCREMENT" -> CounterState(state.counter + 1)
-        "DECREMENT" -> CounterState(state.counter - 1)
+    return when (action) {
+        is Increment -> CounterState(state.counter + 1)
+        is Decrement -> CounterState(state.counter - 1)
         else -> state
     }
 }

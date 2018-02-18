@@ -1,8 +1,9 @@
 package examples.counter.app
 
 import counter.components.Counter
-import examples.counter.reducers.CounterAction
 import examples.counter.reducers.CounterState
+import examples.counter.reducers.Decrement
+import examples.counter.reducers.Increment
 import examples.counter.reducers.counterReducer
 import javafx.application.Application
 import javafx.scene.Scene
@@ -19,8 +20,8 @@ class App : Application() {
         store.addReducer(::counterReducer, "counter", CounterState())
         val counter = component(Counter()) {
             //value = (Provider.store.getStateFor(::counterReducer.name) as CounterState).counter
-            onIncrement = { Provider.store.dispatch(CounterAction("INCREMENT")) }
-            onDecrement = { Provider.store.dispatch(CounterAction("DECREMENT")) }
+            onIncrement = { Provider.store.dispatch(Increment()) }
+            onDecrement = { Provider.store.dispatch(Decrement()) }
         }
         Provider.store.subscribe { counter.value = (Provider.store.getStateFor("counter") as CounterState).counter }
 

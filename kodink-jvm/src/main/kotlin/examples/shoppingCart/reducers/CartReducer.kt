@@ -1,10 +1,9 @@
 package examples.shoppingCart.reducers
 
-import constants.ActionTypes
-import examples.shoppingCart.actions.ActionWithCart
-import examples.shoppingCart.actions.CartAction
-import examples.shoppingCart.actions.CartState
-import examples.shoppingCart.actions.EmptyAction
+import examples.shoppingCart.constants.AddToCart
+import examples.shoppingCart.constants.CartState
+import examples.shoppingCart.constants.CheckoutFailure
+import examples.shoppingCart.constants.CheckoutRequest
 import redux.Action
 import redux.Provider.store
 
@@ -13,10 +12,10 @@ fun cartReducer() {
 }
 
 fun cart(state: CartState, action: Action): CartState {
-    return when {
-        action.type == ActionTypes.CHECKOUT_REQUEST && action is EmptyAction -> CartState()
-        action.type == ActionTypes.CHECKOUT_FAILURE && action is ActionWithCart -> action.cart
-        action is CartAction -> {
+    return when (action) {
+        is CheckoutRequest -> CartState()
+        is CheckoutFailure -> action.cart
+        is AddToCart -> {
             CartState(
                     addedIds = addedIds(CartState(state.addedIds), action).addedIds,
                     quatityById = quantityById(CartState(quatityById = state.quatityById), action).quatityById
@@ -26,23 +25,22 @@ fun cart(state: CartState, action: Action): CartState {
     }
 }
 
-fun addedIds(state: CartState, action: CartAction): CartState {
-    return when (action.type) {
-        ActionTypes.ADD_TO_CART -> {
+fun addedIds(state: CartState, action: Action): CartState {
+    return when (action) {
+        is AddToCart -> {
             if (state.addedIds.contains(action.productId)) {
                 state
             } else {
                 CartState(addedIds = state.addedIds.toList() + action.productId)
             }
-
         }
         else -> state
     }
 }
 
-fun quantityById(state: CartState, action: CartAction): CartState {
-    return when (action.type) {
-        ActionTypes.ADD_TO_CART -> {
+fun quantityById(state: CartState, action: Action): CartState {
+    return when (action) {
+        is AddToCart -> {
             val value = state.quatityById[action.productId] ?: 0
             CartState(quatityById = state.quatityById.toMap() + Pair(action.productId, value + 1))
         }

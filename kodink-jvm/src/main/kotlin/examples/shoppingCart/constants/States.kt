@@ -1,4 +1,4 @@
-package examples.shoppingCart.actions
+package examples.shoppingCart.constants
 
 import examples.shoppingCart.api.Product
 import redux.State

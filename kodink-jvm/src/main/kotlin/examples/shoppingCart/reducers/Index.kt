@@ -1,7 +1,7 @@
 package examples.shoppingCart.reducers
 
-import examples.shoppingCart.actions.CartState
-import examples.shoppingCart.actions.ProductsState
+import examples.shoppingCart.constants.CartState
+import examples.shoppingCart.constants.ProductsState
 import examples.shoppingCart.containers.CartProduct
 import redux.State
 
