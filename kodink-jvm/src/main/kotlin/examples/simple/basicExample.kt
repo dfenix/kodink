@@ -53,15 +53,15 @@ fun basicExample() {
     /* Multiple reducers */
 }
 
-data class IntState(var num: Int = 0) : State
+data class IntState(val num: Int = 0) : State
 data class Inc(val payload: Int) : Action
 data class Dec(val payload: Int) : Action
 
-data class UserState(var name: String = "", var age: Int = 0) : State
+data class UserState(val name: String = "", val age: Int = 0) : State
 data class ChangeName(val name: String) : Action
 data class ChangeAge(val age: Int) : Action
 
-data class TweetsState(var tweets: List<String> = listOf()) : State
+data class TweetsState(val tweets: List<String> = listOf()) : State
 class AddText : Action
 
 

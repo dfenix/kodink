@@ -1,6 +1,5 @@
 package examples.shoppingCart.containers
 
-import examples.shoppingCart.constants.ProductsState
 import examples.shoppingCart.actions.addToCart
 import examples.shoppingCart.api.Product
 import examples.shoppingCart.components.ProductItem
@@ -32,7 +31,7 @@ class ProductsContainer : Component() {
     }
 
     fun mapStateToProps() {
-        products = getVisibleProducts(store.getStateFor("products") as ProductsState).toMutableList()
+// TODO       products = getVisibleProducts(store.getState()).toMutableList()
         update()
     }
 

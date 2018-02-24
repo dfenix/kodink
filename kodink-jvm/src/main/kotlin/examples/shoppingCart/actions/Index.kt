@@ -24,8 +24,8 @@ fun addToCartUnsafe(productId: Int): Action {
 }
 
 fun addToCart(productId: Int) {
-    val state = Provider.store.getStateFor("products")
-    if (state is ProductsState && state.byId[productId]?.inventory!! > 0) {
+    val state = Provider.store.getState() as AppState
+    if (state.byId[productId]?.inventory!! > 0) {
         Provider.store.dispatch(addToCartUnsafe(productId))
     }
 }
@@ -34,6 +34,6 @@ fun checkout(products: List<CartProduct>) {
     store.dispatch(CheckoutRequest())
     launch {
         delay(1000)
-        store.dispatch(CheckoutSuccess(CartState()))
+        store.dispatch(CheckoutSuccess(AppState()))
     }
 }

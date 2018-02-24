@@ -9,6 +9,6 @@ data class AddToCart(val productId: Int) : Action
 
 class CheckoutRequest : Action
 
-class CheckoutFailure(val cart: CartState) : Action
+class CheckoutFailure(val cart: AppState) : Action
 
-class CheckoutSuccess(val cart: CartState) : Action
+class CheckoutSuccess(val cart: AppState) : Action
