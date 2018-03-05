@@ -1,5 +1,8 @@
 package redux
 
 object Provider {
-    val store = Store()
+    lateinit var store: Store
+    fun createStore(reducer: Reducer, initialState: Any){
+        this.store = Store(reducer, initialState)
+    }
 }

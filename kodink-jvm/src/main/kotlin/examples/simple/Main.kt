@@ -7,7 +7,7 @@ import ui.runApp
 
 fun main(args: Array<String>) {
     basicExample()
-    runApp(Launch::class)
+    //TODO runApp(Launch::class)
 }
 
 class Launch : RunApplication() {

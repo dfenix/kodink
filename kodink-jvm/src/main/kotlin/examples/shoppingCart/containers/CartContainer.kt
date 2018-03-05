@@ -25,8 +25,8 @@ class CartContainer : Component() {
     }
 
     fun mapStateToProps() {
-        products = getCartProducts(store.getState())
-        total = getTotal(store.getState())
+        //TODO products = getCartProducts(store.getState())
+        //TODO total = getTotal(store.getState())
         update()
     }
 

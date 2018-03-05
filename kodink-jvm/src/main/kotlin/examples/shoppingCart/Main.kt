@@ -8,6 +8,6 @@ fun main(args: Array<String>) {
     combineReducers()
     getAllproducts()
     getAllproducts()
-    store.applyMiddleware(::logger)
+    //TODO store.applyMiddleware(::logger)
     runApp(App::class)
 }

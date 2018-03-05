@@ -1,22 +1,22 @@
 package examples.simple
 
-import logger
-import redux.Action
+import redux.*
 import redux.Provider.store
-import redux.State
+import middleware.Logger
 
 fun basicExample() {
     /* Simple implementation */
-    fun reducer(state: IntState, action: Action): IntState {
-        return when (action) {
-            is Inc -> state.copy(num = state.num + action.payload)
-            is Dec -> state.copy(num = state.num - action.payload)
-            else -> state
-        }
+    val reducer = Reducer{ state: Any, action: Action ->
+        return@Reducer if(state is Int) {
+            when (action) {
+                is Inc -> state + action.payload
+                is Dec -> state - action.payload
+                else -> state
+            }
+        }else state
     }
-
-    store.addReducer(::reducer, "reducer", IntState())
-    store.applyMiddleware(::logger)
+    Provider.createStore(reducer, 0)
+    store.applyMiddleware(Logger())
 
     store.dispatch(Inc(1))
     store.dispatch(Inc(2))
@@ -34,7 +34,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::userReducer, "user", UserState())
+    //TODO store.addReducer(::userReducer, "user", UserState())
 
     fun tweetsReducer(state: TweetsState, action: Action): TweetsState {
         return when (action) {
@@ -43,7 +43,7 @@ fun basicExample() {
         }
     }
 
-    store.addReducer(::tweetsReducer, "tweets", TweetsState())
+    //TODO store.addReducer(::tweetsReducer, "tweets", TweetsState())
 
     store.dispatch(ChangeName("David"))
     store.dispatch(ChangeAge(25))
@@ -53,15 +53,15 @@ fun basicExample() {
     /* Multiple reducers */
 }
 
-data class IntState(val num: Int = 0) : State
+class IntState(val num: Int = 0): Object()
 data class Inc(val payload: Int) : Action
 data class Dec(val payload: Int) : Action
 
-data class UserState(val name: String = "", val age: Int = 0) : State
+data class UserState(val name: String = "", val age: Int = 0)//TODO : State
 data class ChangeName(val name: String) : Action
 data class ChangeAge(val age: Int) : Action
 
-data class TweetsState(val tweets: List<String> = listOf()) : State
+data class TweetsState(val tweets: List<String> = listOf())//TODO : State
 class AddText : Action
 
 

@@ -8,7 +8,7 @@ import redux.Action
 import redux.Provider.store
 
 fun cartReducer() {
-    store.addReducer(::cart, "cart", AppState())
+    //TODO store.addReducer(::cart, "cart", AppState())
 }
 
 fun cart(state: AppState, action: Action): AppState {

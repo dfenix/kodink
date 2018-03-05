@@ -1,20 +1,22 @@
 package redux
 
-typealias ReducerType<State, Action> = (State, Action) -> State
+//typealias ReducerType<State, Action> = (State, Action) -> State
 typealias ListenerType = () -> Unit
-typealias Middleware = (Action) -> Action
+//typealias Middleware = (Action) -> Action
 
-class Store {
-    private val listReducers = mutableMapOf<String, ReducerType<State, Action>>()
-    private var currentState = mutableMapOf<String, State>()
+class Store(val reducer: Reducer, initialState: Any) {
+    //    private val listReducers = mutableMapOf<String, ReducerType<State, Action>>()
+    private var currentState = initialState
     private var listeners = mutableListOf<ListenerType>()
     private var isDispatching: Boolean = false
     private var middlewares = mutableListOf<Middleware>()
+    private val hasMiddleware
+        get() = middlewares.size > 0
 
     fun getState() = currentState
-    fun getStateFor(name: String) = currentState[name]!!
+//    fun getStateFor(name: String) = currentState[name]!!
 
-    fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, name: String, initialState: S): Boolean {
+    /*fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, name: String, initialState: S): Boolean {
         val key = if (name.isEmpty()) "stored_fun_${listReducers.size}" else name
         if (!listReducers.containsKey(key)) {
             @Suppress("UNCHECKED_CAST")
@@ -23,9 +25,9 @@ class Store {
             return true
         }
         return false
-    }
+    }*/
 
-    fun subscribe(listener: ListenerType) {
+    fun subscribe(listener: ListenerType): () -> Unit {
         if (isDispatching) {
             throw Error("You may not call store.subscribe() while the reducer is executing. " +
                     "If you would like to be notified after the store has been updated, subscribe from a " +
@@ -34,50 +36,34 @@ class Store {
             )
         }
         listeners.add(listener)
-    }
-
-    fun unsubscribe() {
-        if (isDispatching) {
-            throw Error("You may not unsubscribe from a store listener while the reducer is executing. " +
-                    "See http://redux.js.org/docs/api/Store.html#subscribe for more details."
-            )
+//        val index = listeners.size
+        return fun() {
+            if (isDispatching) {
+                throw Error("You may not unsubscribe from a store listener while the reducer is executing.")
+            }
+//            listeners.removeAt(index)
+            listeners.remove { listener }
         }
-//        val index = nextListeners.indexOf(listener)
-//        nextListeners.removeAt(index)
     }
 
     fun dispatch(action: Action) {
-        var newAction = action
-        if (middlewares.size == 0) {
-            _dispatch(action)
+        if (!hasMiddleware) {
+            dispatchToReducer(action)
         } else {
-            middlewares.map { newAction = it(newAction) }
-            _dispatch(newAction)
+            var newAction = action
+            middlewares.map { newAction = it.beforeDispatch(newAction) }
+            dispatchToReducer(newAction)
         }
     }
 
-    private fun _dispatch(action: Action): Action {
+    private fun dispatchToReducer(action: Action): Action {
         if (isDispatching) {
             throw Error("Reducers may not dispatch actions.")
         }
 
         try {
             isDispatching = true
-
-            var hasChanged = false
-            val nextState = mutableMapOf<String, State>()
-            for (reducer in listReducers) {
-                val key = reducer.key
-                val previousStateForKey = currentState[key]!!
-                try {
-                    val nextStateForKey = reducer.value(previousStateForKey, action)
-                    nextState[key] = nextStateForKey
-                    hasChanged = hasChanged || nextStateForKey !== previousStateForKey
-                } catch (e: Exception) {
-                    nextState[key] = previousStateForKey
-                }
-            }
-            if (hasChanged) currentState = nextState
+            currentState = reducer.reduce(currentState, action)
         } finally {
             isDispatching = false
         }

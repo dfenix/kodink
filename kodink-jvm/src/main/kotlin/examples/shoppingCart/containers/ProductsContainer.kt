@@ -4,7 +4,6 @@ import examples.shoppingCart.actions.addToCart
 import examples.shoppingCart.api.Product
 import examples.shoppingCart.components.ProductItem
 import examples.shoppingCart.components.ProductsList
-import examples.shoppingCart.reducers.getVisibleProducts
 import javafx.application.Platform
 import redux.Provider.store
 import ui.Component

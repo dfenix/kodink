@@ -10,13 +10,13 @@ import redux.Provider.store
 //data class ProductsState(val inventory: Int = 0) : State
 
 fun productsReducer() {
-    store.addReducer(::combineProductsReducer, "products", AppState())
+//    TODO store.addReducer(::combineProductsReducer, "products", AppState())
 }
 
 fun combineProductsReducer(state: AppState, action: Action): AppState {
     val byIdResult = byId(state, action)
     val visibleIdsResult = visibleIds(state, action)
-    return state.copy(byId = byIdResult.byId,visibleIds = visibleIdsResult.visibleIds)
+    return state.copy(byId = byIdResult.byId, visibleIds = visibleIdsResult.visibleIds)
 }
 
 fun products(state: AppState, action: Action): AppState {
@@ -49,7 +49,7 @@ fun byId(state: AppState, action: Action): AppState {
     }
 }
 
-fun visibleIds(state: AppState, action: Action): AppState{
+fun visibleIds(state: AppState, action: Action): AppState {
     return when (action) {
         is ReceiveProducts -> AppState(visibleIds = action.products.map { it.id })
         else -> state

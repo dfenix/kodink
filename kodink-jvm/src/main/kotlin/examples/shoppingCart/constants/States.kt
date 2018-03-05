@@ -42,4 +42,4 @@ data class AppState(
         val quatityById: Map<Int, Int> = mapOf(),
         val byId: Map<Int, Product> = mapOf(),
         val visibleIds: List<Int> = listOf()
-): State
+) //TODO: State
