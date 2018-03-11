@@ -1,16 +1,13 @@
 package examples.counter.app
 
 import counter.components.Counter
-import examples.counter.reducers.CounterState
 import examples.counter.reducers.Decrement
 import examples.counter.reducers.Increment
-import examples.counter.reducers.counterReducer
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import redux.Provider
-import redux.Provider.store
 import ui.component
 
 class App : Application() {

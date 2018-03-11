@@ -2,7 +2,6 @@ package examples.simple
 
 import redux.Action
 import redux.Provider.store
-import redux.State
 
 fun main(args: Array<String>) {
     /* TODO fun reducer(state: IntState, action: Action): IntState {
@@ -24,6 +23,7 @@ fun main(args: Array<String>) {
 
 // TODO data class IntState(var num: Int = 0) : State
 data class Inc(val payload: Int) : Action
+
 data class Dec(val payload: Int) : Action
 
 

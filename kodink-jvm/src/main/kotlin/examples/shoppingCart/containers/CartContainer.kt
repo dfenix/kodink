@@ -2,8 +2,6 @@ package examples.shoppingCart.containers
 
 import examples.shoppingCart.actions.checkout
 import examples.shoppingCart.components.Cart
-import examples.shoppingCart.reducers.getCartProducts
-import examples.shoppingCart.reducers.getTotal
 import javafx.application.Platform
 import redux.Provider.store
 import ui.Component

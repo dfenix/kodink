@@ -4,7 +4,7 @@ package redux
 typealias ListenerType = () -> Unit
 //typealias Middleware = (Action) -> Action
 
-class Store(val reducer: Reducer, initialState: Any) {
+class Store(val reducer: IReducer, initialState: Any) {
     //    private val listReducers = mutableMapOf<String, ReducerType<State, Action>>()
     private var currentState = initialState
     private var listeners = mutableListOf<ListenerType>()
@@ -14,7 +14,7 @@ class Store(val reducer: Reducer, initialState: Any) {
         get() = middlewares.size > 0
 
     fun getState() = currentState
-//    fun getStateFor(name: String) = currentState[name]!!
+    fun getStateFor(name: String) = (currentState as States)[name]!!
 
     /*fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, name: String, initialState: S): Boolean {
         val key = if (name.isEmpty()) "stored_fun_${listReducers.size}" else name

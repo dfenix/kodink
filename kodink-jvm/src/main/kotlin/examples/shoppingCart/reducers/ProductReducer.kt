@@ -5,7 +5,6 @@ import examples.shoppingCart.constants.AddToCart
 import examples.shoppingCart.constants.AppState
 import examples.shoppingCart.constants.ReceiveProducts
 import redux.Action
-import redux.Provider.store
 
 //data class ProductsState(val inventory: Int = 0) : State
 

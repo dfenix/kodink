@@ -5,7 +5,6 @@ import examples.shoppingCart.constants.AppState
 import examples.shoppingCart.constants.CheckoutFailure
 import examples.shoppingCart.constants.CheckoutRequest
 import redux.Action
-import redux.Provider.store
 
 fun cartReducer() {
     //TODO store.addReducer(::cart, "cart", AppState())

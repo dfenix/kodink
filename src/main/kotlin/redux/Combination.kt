@@ -1,13 +1,13 @@
 package redux
 
-class Combination(val reducers: Map<String, Reducer>) : IReducer{
+class Combination(val reducers: Map<String, Reducer>) : IReducer {
     override val reduce = { state: Any, action: Action ->
-        if (state is Object) {
+        if (state is States) {
             var hasChanged = false
-            val nextState = mutableMapOf<String, Any>()
+            val nextState = States()
             for (reducer in reducers) {
                 val key = reducer.key
-                val previousStateForKey = state.props[key]!!
+                val previousStateForKey = state[key]!!
                 try {
                     var nextStateForKey = reducer.value.reduce(previousStateForKey, action)
                     nextState[key] = nextStateForKey
@@ -17,12 +17,15 @@ class Combination(val reducers: Map<String, Reducer>) : IReducer{
                     println(e)
                 }
             }
-            if (hasChanged) nextState
+            if (hasChanged) {
+                nextState
+            } else {
+                state
+            }
+        } else {
+            state
         }
-        state
     }
 }
-
-open class Object(val props: MutableMap<String, State> = mutableMapOf()) : State
 
 

@@ -1,19 +1,20 @@
 package examples.simple
 
+import middleware.Logger
 import redux.*
 import redux.Provider.store
-import middleware.Logger
 
 fun basicExample() {
-    /* Simple implementation */
-    val reducer = Reducer{ state: Any, action: Action ->
-        return@Reducer if(state is Int) {
+    val reducer = Reducer { state, action ->
+        if (state is Int) {
             when (action) {
                 is Inc -> state + action.payload
                 is Dec -> state - action.payload
                 else -> state
             }
-        }else state
+        } else {
+            state
+        }
     }
     Provider.createStore(reducer, 0)
     store.applyMiddleware(Logger())
@@ -23,37 +24,46 @@ fun basicExample() {
     store.dispatch(Inc(22))
     store.dispatch(Inc(1))
     store.dispatch(Dec(1000))
-    /* Simple implementation */
+}
 
-    /* Multiple reducers */
-    fun userReducer(state: UserState, action: Action): UserState {
-        return when (action) {
-            is ChangeName -> state.copy(name = action.name)
-            is ChangeAge -> state.copy(age = action.age)
-            else -> state
+fun multipleReducers() {
+    val user = Reducer { state, action ->
+        if (state is UserState) {
+            when (action) {
+                is ChangeName -> state.copy(name = action.name)
+                is ChangeAge -> state.copy(age = action.age)
+                else -> state
+            }
+        } else {
+            state
         }
     }
 
-    //TODO store.addReducer(::userReducer, "user", UserState())
-
-    fun tweetsReducer(state: TweetsState, action: Action): TweetsState {
-        return when (action) {
-            is AddText -> state.copy()
-            else -> state
+    val tweets = Reducer { state, action ->
+        if (state is TweetsState) {
+            when (action) {
+                is AddText -> state.copy(state.tweets + "new text")
+                else -> state
+            }
+        } else {
+            state
         }
     }
 
-    //TODO store.addReducer(::tweetsReducer, "tweets", TweetsState())
-
+    val combine = combineReducers("user" to user, "tweets" to tweets)
+    val state = States()
+    state["user"] = UserState()
+    state["tweets"] = TweetsState()
+    Provider.createStore(combine, state)
     store.dispatch(ChangeName("David"))
     store.dispatch(ChangeAge(25))
     store.dispatch(ChangeAge(26))
 
     println(store.getState())
-    /* Multiple reducers */
+    println(store.getStateFor("user"))
+    println(store.getStateFor("tweets"))
 }
 
-class IntState(val num: Int = 0): Object()
 data class Inc(val payload: Int) : Action
 data class Dec(val payload: Int) : Action
 
@@ -63,5 +73,4 @@ data class ChangeAge(val age: Int) : Action
 
 data class TweetsState(val tweets: List<String> = listOf())//TODO : State
 class AddText : Action
-
 

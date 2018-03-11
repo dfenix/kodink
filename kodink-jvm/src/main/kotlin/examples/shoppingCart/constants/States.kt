@@ -1,7 +1,6 @@
 package examples.shoppingCart.constants
 
 import examples.shoppingCart.api.Product
-import redux.State
 
 //data class ByIdState(val byId: Map<Int, Product> = mapOf()) : State
 

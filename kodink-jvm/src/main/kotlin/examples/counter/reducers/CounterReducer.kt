@@ -1,7 +1,6 @@
 package examples.counter.reducers
 
 import redux.Action
-import redux.State
 
 data class CounterState(val counter: Int = 0)//TODO : State
 class Increment : Action

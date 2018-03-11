@@ -2,7 +2,7 @@ package redux
 
 class Reducer(override val reduce: (Any, Action) -> Any) : IReducer
 
-interface IReducer{
+interface IReducer {
     val reduce: (Any, Action) -> Any
 }
 
