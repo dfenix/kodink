@@ -1,6 +1,6 @@
 package redux
 
-class Reducer(override val reduce: (Any, Action) -> Any) : IReducer
+open class Reducer(override val reduce: (Any, Action) -> Any) : IReducer
 
 interface IReducer {
     val reduce: (Any, Action) -> Any

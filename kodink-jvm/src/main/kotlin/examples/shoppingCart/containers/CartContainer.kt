@@ -2,7 +2,6 @@ package examples.shoppingCart.containers
 
 import examples.shoppingCart.actions.checkout
 import examples.shoppingCart.components.Cart
-import javafx.application.Platform
 import redux.Provider.store
 import ui.Component
 import ui.component
@@ -28,12 +27,12 @@ class CartContainer : Component() {
         update()
     }
 
-    fun update() {
-        Platform.runLater({
-            children.clear()
-            create()
-        })
-    }
+//    fun update() {
+//        Platform.runLater({
+//            children.clear()
+//            create()
+//        })
+//    }
 }
 
 data class CartProduct(var id: Int = 0, var title: String = "", var price: Double = 0.0, var quantity: Int = 0)

@@ -1,10 +1,8 @@
 package examples.shoppingCart.containers
 
-import examples.shoppingCart.actions.addToCart
 import examples.shoppingCart.api.Product
 import examples.shoppingCart.components.ProductItem
 import examples.shoppingCart.components.ProductsList
-import javafx.application.Platform
 import redux.Provider.store
 import ui.Component
 import ui.component
@@ -24,7 +22,7 @@ class ProductsContainer : Component() {
         +products.map {
             component(ProductItem()) {
                 product = it
-                subscribe("onAddToCartClicked", { addToCart(it.id) })
+//                subscribe("onAddToCartClicked", { addToCart(it.id) })
             }
         }
     }
@@ -34,10 +32,10 @@ class ProductsContainer : Component() {
         update()
     }
 
-    fun update() {
-        Platform.runLater({
-            children.clear()
-            create()
-        })
-    }
+//    fun update() {
+//        Platform.runLater({
+//            children.clear()
+//            create()
+//        })
+//    }
 }

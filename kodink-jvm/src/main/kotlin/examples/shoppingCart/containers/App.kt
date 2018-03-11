@@ -1,10 +1,10 @@
 package examples.shoppingCart.containers
 
 import javafx.scene.Parent
-import ui.RunApplication
+import ui.Application
 import ui.container
 
-class App : RunApplication() {
+class App : Application() {
     override fun render(): Parent {
         return container {
             text { +"Shopping Cart Example" }
