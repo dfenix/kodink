@@ -13,6 +13,9 @@ class App : Application() {
     init {
         Provider.createStore(CounterReducer(), 0)
         store.subscribe { update() }
+        title = "Counter example"
+        width = 150.0
+        height = 80.0
     }
 
     override fun render() = component(Counter()) {
