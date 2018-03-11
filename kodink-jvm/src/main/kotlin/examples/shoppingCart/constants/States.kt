@@ -36,9 +36,9 @@ import examples.shoppingCart.api.Product
 //    }
 //}
 
-data class AppState(
+/*data class AppState(
         val addedIds: List<Int> = listOf(),
         val quatityById: Map<Int, Int> = mapOf(),
         val byId: Map<Int, Product> = mapOf(),
         val visibleIds: List<Int> = listOf()
-) //TODO: State
+)*/ //TODO: State

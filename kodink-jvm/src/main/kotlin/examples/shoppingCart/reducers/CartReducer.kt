@@ -1,52 +1,57 @@
 package examples.shoppingCart.reducers
 
 import examples.shoppingCart.constants.AddToCart
-import examples.shoppingCart.constants.AppState
 import examples.shoppingCart.constants.CheckoutFailure
 import examples.shoppingCart.constants.CheckoutRequest
 import redux.Action
+import redux.Reducer
 
-fun cartReducer() {
-    //TODO store.addReducer(::cart, "cart", AppState())
-}
+class InitialState(
+        val addedIds: List<Int> = listOf(),
+        val quatityById: Map<Int, Int> = mapOf()
+)
 
-fun cart(state: AppState, action: Action): AppState {
-    return when (action) {
-        is CheckoutRequest -> AppState()
-        is CheckoutFailure -> action.cart
+val addedIds = { state: List<Int>, action: Action ->
+    when (action) {
         is AddToCart -> {
-            AppState(
-                    addedIds = addedIds(AppState(state.addedIds), action).addedIds,
-                    quatityById = quantityById(AppState(quatityById = state.quatityById), action).quatityById
-            )
-        }
-        else -> state
-    }
-}
-
-fun addedIds(state: AppState, action: Action): AppState {
-    return when (action) {
-        is AddToCart -> {
-            if (state.addedIds.contains(action.productId)) {
+            if (state.contains(action.productId)) {
                 state
             } else {
-                AppState(addedIds = state.addedIds.toList() + action.productId)
+                state + action.productId
             }
         }
         else -> state
     }
 }
 
-fun quantityById(state: AppState, action: Action): AppState {
-    return when (action) {
+val quantityById = { state: Map<Int, Int>, action: Action ->
+    when (action) {
         is AddToCart -> {
-            val value = state.quatityById[action.productId] ?: 0
-            AppState(quatityById = state.quatityById.toMap() + Pair(action.productId, value + 1))
+            val productId = action.productId
+            state + (productId to (state[productId]?.plus(1) ?: 0))
         }
         else -> state
     }
 }
 
 
-fun getQuantity(state: AppState, productId: Int) = state.quatityById[productId] ?: 0
+fun getQuantity(state: InitialState, productId: Int) = state.quatityById[productId] ?: 0
+
+class Cart : Reducer({ state, action ->
+    if (state is InitialState) {
+        when (action) {
+            is CheckoutRequest -> InitialState()
+            is CheckoutFailure -> action.cart
+            is AddToCart -> {
+                InitialState(
+                        addedIds(state.addedIds, action),
+                        quantityById(state.quatityById, action)
+                )
+            }
+            else -> state
+        }
+    } else {
+        state
+    }
+})
 

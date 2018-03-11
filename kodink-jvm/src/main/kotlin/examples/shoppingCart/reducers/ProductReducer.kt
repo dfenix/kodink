@@ -5,6 +5,8 @@ import examples.shoppingCart.constants.AddToCart
 import examples.shoppingCart.constants.AppState
 import examples.shoppingCart.constants.ReceiveProducts
 import redux.Action
+import redux.Reducer
+import redux.combineReducers
 
 //data class ProductsState(val inventory: Int = 0) : State
 
@@ -32,8 +34,8 @@ fun products(state: AppState, action: Action): AppState {
     }
 }
 
-fun byId(state: AppState, action: Action): AppState {
-    return when (action) {
+val byId = Reducer({state, action: Action ->
+    when (action) {
         is ReceiveProducts -> {
             val reduce = mutableMapOf<Int, Product>()
             state.copy(byId = action.products.fold(reduce) { acc, product ->
@@ -44,16 +46,28 @@ fun byId(state: AppState, action: Action): AppState {
         is AddToCart -> {
             state.copy(byId = state.byId + products(state, action).byId)
         }
-        else -> state
+        else -> {
+            val productId = action.productId
+            if (productId){
+                mapOf<Int, >()
+            }
+        }
     }
-}
+})
 
-fun visibleIds(state: AppState, action: Action): AppState {
-    return when (action) {
-        is ReceiveProducts -> AppState(visibleIds = action.products.map { it.id })
-        else -> state
+val visibleIds = Reducer({state, action ->
+    if(state is List<*>) {
+        when (action) {
+            is ReceiveProducts -> action.products.map { it.id }
+            else -> state
+        }
     }
-}
+    else{
+        state
+    }
+})
+
+fun products() = combineReducers("byId" to byId, "visibleIds" to visibleIds)
 
 fun getProduct(state: AppState, id: Int) = state.byId[id]!!
 
