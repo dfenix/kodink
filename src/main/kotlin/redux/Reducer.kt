@@ -6,4 +6,4 @@ interface IReducer {
     val reduce: (Any, Action) -> Any
 }
 
-fun combineReducers(vararg reducers: Pair<String, Reducer>) = Combination(reducers.toMap())
+fun combineReducers(vararg reducers: Pair<String, IReducer>) = Combination(reducers.toMap())

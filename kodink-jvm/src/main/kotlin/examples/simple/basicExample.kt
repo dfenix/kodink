@@ -6,17 +6,17 @@ import redux.Provider.store
 
 fun basicExample() {
     val reducer = Reducer { state, action ->
-        if (state is Int) {
+        if (state is IntState) {
             when (action) {
-                is Inc -> state + action.payload
-                is Dec -> state - action.payload
+                is Inc -> IntState(state.value + action.payload)
+                is Dec -> IntState(state.value - action.payload)
                 else -> state
             }
         } else {
             state
         }
     }
-    Provider.createStore(reducer, 0)
+    Provider.createStore(reducer, 0.toState())
     store.applyMiddleware(Logger())
 
     store.dispatch(Inc(1))
@@ -67,10 +67,10 @@ fun multipleReducers() {
 data class Inc(val payload: Int) : Action
 data class Dec(val payload: Int) : Action
 
-data class UserState(val name: String = "", val age: Int = 0)//TODO : State
+data class UserState(val name: String = "", val age: Int = 0) : State
 data class ChangeName(val name: String) : Action
 data class ChangeAge(val age: Int) : Action
 
-data class TweetsState(val tweets: List<String> = listOf())//TODO : State
+data class TweetsState(val tweets: List<String> = listOf()) : State
 class AddText : Action
 

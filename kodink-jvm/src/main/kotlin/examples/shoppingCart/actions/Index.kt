@@ -9,6 +9,7 @@ import kotlinx.coroutines.experimental.launch
 import redux.Action
 import redux.Provider
 import redux.Provider.store
+import redux.States
 
 fun receiveProducts(products: List<Product>) = ReceiveProducts(products)
 
@@ -24,8 +25,8 @@ fun addToCartUnsafe(productId: Int): Action {
 }
 
 fun addToCart(productId: Int) {
-    val state = Provider.store.getState() as AppState
-    if (state.byId[productId]?.inventory!! > 0) {
+    val state = Provider.store.getState() as States
+    if (((state["products"] as States)["byId"] as Map<Int, Product>)[productId]?.inventory!! > 0) {
         Provider.store.dispatch(addToCartUnsafe(productId))
     }
 }

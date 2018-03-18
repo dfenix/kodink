@@ -1,6 +1,6 @@
 package examples.shoppingCart.api
 
-data class Product(var id: Int = 0, var title: String = "", var price: Double = 0.0, var inventory: Int = 0)
+data class Product(var id: Int = 0, var title: String = "", var price: Double = 0.0, var inventory: Int = 0, val quantity: Int = 0)
 
 fun products(): List<Product> {
     return listOf(

@@ -1,6 +1,6 @@
 package redux
 
-class Combination(val reducers: Map<String, Reducer>) : IReducer {
+class Combination(val reducers: Map<String, IReducer>) : IReducer {
     override val reduce = { state: Any, action: Action ->
         if (state is States) {
             var hasChanged = false

@@ -1,6 +1,9 @@
 package redux
 
 interface State
+interface BasicState : State {
+    val value: Any
+}
 
 class States : State {
     private val props = mutableMapOf<String, Any>()
@@ -11,3 +14,15 @@ class States : State {
         props[name] = value
     }
 }
+
+class IntState(override val value: Int) : BasicState
+
+fun Int.toState() = IntState(this)
+
+class MapState(override val value: Map<*, *>) : BasicState
+
+fun Map<*, *>.toState() = MapState(this)
+
+class ListState(override val value: List<*>) : BasicState
+
+fun List<*>.toState() = ListState(this)

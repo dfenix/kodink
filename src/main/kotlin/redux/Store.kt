@@ -14,7 +14,8 @@ class Store(val reducer: IReducer, initialState: Any) {
         get() = middlewares.size > 0
 
     fun getState() = currentState
-    fun getStateFor(name: String) = (currentState as States)[name]!!
+
+//    fun getStateFor(name: String) = (currentState as States)[name]!!
 
     /*fun <S : State, A : Action> addReducer(newReducer: ReducerType<S, A>, name: String, initialState: S): Boolean {
         val key = if (name.isEmpty()) "stored_fun_${listReducers.size}" else name
@@ -42,7 +43,7 @@ class Store(val reducer: IReducer, initialState: Any) {
                 throw Error("You may not unsubscribe from a store listener while the reducer is executing.")
             }
 //            listeners.removeAt(index)
-            listeners.remove { listener }
+            listeners.remove(listener)
         }
     }
 

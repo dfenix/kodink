@@ -1,44 +1,32 @@
 package examples.shoppingCart.constants
 
 import examples.shoppingCart.api.Product
+import redux.State
 
-//data class ByIdState(val byId: Map<Int, Product> = mapOf()) : State
+typealias addedIds = List<Int>
+typealias quantityById = Map<Int, Int>
 
-//data class ListState(val list: List<Int> = listOf()) : State
+class CartState(val addedIds: addedIds = listOf(), val quantityById: quantityById = mapOf()) : State
 
-//data class ProductsState(val byId: Map<Int, Product> = mapOf(), val visibleIds: List<Int> = listOf()) : State
+typealias byId = Map<Int, Product>
+typealias visibleIds = List<Int>
 
-//data class ProductState(val product: Product = Product()) : State
+class ProductsState(val byId: byId = mapOf(), val visibleIds: visibleIds = listOf()) : State
 
-//data class CartState(
-//        val addedIds: List<Int> = listOf(),
-//        val quatityById: Map<Int, Int> = mapOf()
-//) : State
+class AppState(val cart: CartState = CartState(), val products: ProductsState = ProductsState()) : State
 
-//data class AppState(var cart: CartState = CartState(), var products: ProductsState = ProductsState()) : State {
-//    val addedIds
-//        get() = cart.addedIds
-//    val quatityById
-//        get() = cart.quatityById
-//    val byId
-//        get() = products.byId
-//    val visibleIds
-//        get() = products.visibleIds
-//
-//    constructor(
-//            addedIds: List<Int> = listOf(),
-//            quatityById: Map<Int, Int> = mapOf(),
-//            byId: Map<Int, Product> = mapOf(),
-//            visibleIds: List<Int> = listOf()
-//    ) : this() {
-//        cart = CartState(addedIds, quatityById)
-//        products = ProductsState(byId, visibleIds)
-//    }
-//}
+/*fun initialState(): States {
+    val cart = States()
+    cart["addedIds"] = listOf<Int>()
+    cart["quantityById"] = mapOf<Int, Int>()
 
-/*data class AppState(
-        val addedIds: List<Int> = listOf(),
-        val quatityById: Map<Int, Int> = mapOf(),
-        val byId: Map<Int, Product> = mapOf(),
-        val visibleIds: List<Int> = listOf()
-)*/ //TODO: State
+    val products = States()
+    products["byId"] = mapOf<Int, Product>()
+    products["visibleIds"] = listOf<Int>()
+
+    val app = States()
+    app["cart"] = cart
+    app["products"] = products
+
+    return app
+}*/
