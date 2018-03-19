@@ -4,7 +4,7 @@ package redux
 typealias ListenerType = () -> Unit
 //typealias Middleware = (Action) -> Action
 
-class Store(val reducer: IReducer, initialState: Any) {
+class Store(val reducer: IReducer, initialState: State) {
     //    private val listReducers = mutableMapOf<String, ReducerType<State, Action>>()
     private var currentState = initialState
     private var listeners = mutableListOf<ListenerType>()

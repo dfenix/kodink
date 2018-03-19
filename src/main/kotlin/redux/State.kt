@@ -1,11 +1,21 @@
 package redux
 
-interface State
+import kotlin.reflect.full.memberProperties
+
+interface State {
+    operator fun get(name: String) {
+        val prop = this::class.memberProperties.find {
+            it.name == name
+        }
+        TODO("get the value of the property")
+    }
+}
+
 interface BasicState : State {
     val value: Any
 }
 
-class States : State {
+/*class States : State {
     private val props = mutableMapOf<String, Any>()
 
     operator fun get(name: String): Any? = props[name]
@@ -13,7 +23,7 @@ class States : State {
     operator fun set(name: String, value: Any) {
         props[name] = value
     }
-}
+}*/
 
 class IntState(override val value: Int) : BasicState
 

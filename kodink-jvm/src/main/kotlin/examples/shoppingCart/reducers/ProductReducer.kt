@@ -2,7 +2,7 @@ package examples.shoppingCart.reducers
 
 import examples.shoppingCart.api.Product
 import examples.shoppingCart.constants.AddToCart
-import examples.shoppingCart.constants.Products
+import examples.shoppingCart.constants.ProductsState
 import examples.shoppingCart.constants.ReceiveProducts
 import redux.*
 
@@ -49,8 +49,8 @@ val visibleIds = Reducer({ state, action ->
 
 fun combineProductsReducer() = combineReducers("byId" to byId, "visibleIds" to visibleIds)
 
-fun getProduct(state: Products, id: Int) = state.byId[id]!!
+fun getProduct(state: ProductsState, id: Int) = state.byId[id]!!
 
-fun getVisibleProducts(state: Products) = state.visibleIds.map {
+fun getVisibleProducts(state: ProductsState) = state.visibleIds.map {
     getProduct(state, it)
 }

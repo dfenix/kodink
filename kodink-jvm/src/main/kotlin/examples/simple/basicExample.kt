@@ -51,7 +51,7 @@ fun multipleReducers() {
     }
 
     val combine = combineReducers("user" to user, "tweets" to tweets)
-    val state = States()
+    /*val state = States()
     state["user"] = UserState()
     state["tweets"] = TweetsState()
     Provider.createStore(combine, state)
@@ -59,9 +59,9 @@ fun multipleReducers() {
     store.dispatch(ChangeAge(25))
     store.dispatch(ChangeAge(26))
 
-    println(store.getState())
-    println(store.getStateFor("user"))
-    println(store.getStateFor("tweets"))
+    println(store.getState())*/
+//    TODO println(store.getStateFor("user"))
+//    TODO println(store.getStateFor("tweets"))
 }
 
 data class Inc(val payload: Int) : Action
